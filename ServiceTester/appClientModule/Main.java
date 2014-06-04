@@ -33,11 +33,11 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		TestInterface test = new GetItemTest();
-//		System.out.println(excutePost(test));
-//		
-//		System.out.println("Calling get shop ");
-//		test = new GetShopTest();
-//		System.out.println(excutePost(test));
+		System.out.println(excutePost(test));
+		
+	//	System.out.println("Calling get shop ");
+	//	test = new GetShopTest();
+	//	System.out.println(excutePost(test));
 //		
 		System.out.println("Register user ");
 		test = new RegisterUserTest();
