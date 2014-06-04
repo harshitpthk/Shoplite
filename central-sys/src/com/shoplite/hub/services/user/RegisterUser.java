@@ -2,10 +2,14 @@ package com.shoplite.hub.services.user;
 
 import java.sql.Connection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -13,10 +17,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.shoplite.hub.services.BaseService;
-import com.shoplite.hub.statics.InMemoryDS;
 import com.shoplite.hub.statics.SQLUtil;
 import com.shoplite.hub.statics.Util;
 import com.shoplite.models.RegistrationTokenizer;
+import com.shoplite.models.User;
 
 @Path("registeruser") 
 public class RegisterUser extends BaseService{
@@ -25,38 +29,50 @@ public class RegisterUser extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String registerUser(String userString)
+	public String registerUser(@Context HttpServletRequest request, @Context HttpServletResponse response,String userString)
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
 		
 		try{
-			
 			initDB();
 			conn = dataSource.getConnection();
-			String user_email = gson.fromJson(userString, String.class);
+			HttpSession session = request.getSession(true);
+			session.setMaxInactiveInterval(60*60);
+			logger.error(session.toString());
+			String cookieName = request.getServletContext().getInitParameter("RegCookie");
+			
+			User user = gson.fromJson(userString, User.class);
 			String random = Util.generateRandomString(8);
 		
 			RegistrationTokenizer reg = new RegistrationTokenizer();
+			if(user.getEmail()==null || user.getPhno()==null)
+				throw new Exception("user data is not vallid");
 			
-			if(checkUserExists(user_email,conn))
+			int id = SQLUtil.getUserId(user.getEmail(), conn, logger);
+			
+			if(id>99999)
 			{
-				reg.setUserExists(true);	
-				InMemoryDS.getToBeValidatedUsers().setItem(random,user_email,conn);
-				
+				reg.setUserExists(true);
+				user.setId(id);
 			}else
 			{
 				reg.setUserExists(false);
-				InMemoryDS.getToBeRegisteredUsers().setItem(random, user_email,conn);
 			}
 			
 			reg.setValidator(random);
 			reg.setToken(Util.generateRandomNumber(5));	
-			return gson.toJson(reg);
+			reg.setUser(user);
+			
+			session.setAttribute(cookieName, reg);
+			return gson.toJson(reg.getToken());
 			
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
 			return getError();
 		}finally
 		{
@@ -64,12 +80,4 @@ public class RegisterUser extends BaseService{
 		}
 	}
 	
-	public boolean checkUserExists(String user_email, Connection conn) throws Exception
-	{
-		int id = SQLUtil.getUserId(user_email, conn, logger);
-		
-		if(id>99999)
-			return true;
-		else return false;
-	}
 }

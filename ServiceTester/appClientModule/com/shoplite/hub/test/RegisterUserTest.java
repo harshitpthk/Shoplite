@@ -35,8 +35,7 @@ public class RegisterUserTest implements TestInterface{
 		user.setDob("03/06/1987");
 		user_id = user.getEmail()+"-"+user.getPhno();
 		Gson gson = new Gson();
-		System.out.println(gson.toJson(user.getEmail()));
-		return gson.toJson(user.getEmail());
+		return gson.toJson(user);
 		
 		
 	}

@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.List;
 
 import sun.misc.BASE64Encoder;
 
@@ -46,15 +47,13 @@ public class Main {
 		String user_id = ((RegisterUserTest)test).user_id;
 		user_id= new BASE64Encoder().encode(user_id.getBytes());
 		
-		User user = ((RegisterUserTest)test).user;
-				
+			
 		System.out.println("reg obj got back ="+obj);
 		
 		System.out.println("add user ");
 		Gson  gson = new Gson();
-		RegistrationTokenizer reg =gson.fromJson(obj, RegistrationTokenizer.class);
-		reg.setUser(user);
-		test = new AddUserTest(reg);
+		Integer regtoken =gson.fromJson(obj, Integer.class);
+		test = new AddUserTest(regtoken);
 		String client =excutePost(test);
 		String id = gson.fromJson(client, String.class);
 		System.out.println("client id got ="+client);
@@ -100,6 +99,8 @@ public class Main {
 	     connection.setRequestProperty(HEADER_KEY, HEADER_VALUE);
 	     connection.setRequestProperty(Util.session_user_header, session_id);
 	     connection.setRequestProperty("user", user_id);
+	     connection.setRequestProperty("Cookie", session_id);
+			
 	     test.writeHeaders(connection);
 	     
 	     boolean redirect = false;
@@ -129,6 +130,7 @@ public class Main {
 		     connection.setRequestProperty(HEADER_KEY, HEADER_VALUE);
 		     connection.setRequestProperty("shoplite-user-token", session_id);
 		     connection.setRequestProperty("user", user_id);
+		     connection.setRequestProperty("Cookie", session_id);
 		     test.writeHeaders(connection);
 	  
 	 		//System.out.println("Redirect to URL : " + newUrl);
@@ -157,6 +159,19 @@ public class Main {
 	      }
 	      rd.close();
 	      test.readHeaders(connection);
+	      
+	      List<String> cookies = connection.getHeaderFields().get("Set-Cookie");
+	      for (String cookie : cookies) {                    
+             if(cookie.contains("JSESSIONID="))
+             {
+            	 session_id=cookie.split(";")[0];
+            	 System.out.println(session_id);
+            	 break;
+             }
+             
+         }
+	      
+	      
 	      return response.toString();
 
 	    } catch (Exception e) {
