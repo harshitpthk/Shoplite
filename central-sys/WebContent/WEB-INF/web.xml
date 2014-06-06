@@ -41,8 +41,8 @@
 </context-param>
 	
 <filter>
-  <filter-name>CorsFilter</filter-name>
-  <filter-class>com.shoplite.hub.filters.CorsFilter</filter-class>
+  <filter-name>RequestFilter</filter-name>
+  <filter-class>com.shoplite.hub.filters.RequestFilter</filter-class>
   <init-param>
     <param-name>cors.allowed.origins</param-name>
     <param-value>*</param-value>
@@ -73,7 +73,7 @@
   </init-param>
 </filter>
 <filter-mapping>
-  <filter-name>CorsFilter</filter-name>
+  <filter-name>RequestFilter</filter-name>
   <url-pattern>/*</url-pattern>
 </filter-mapping>
 <resource-ref>

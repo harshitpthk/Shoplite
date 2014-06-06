@@ -22,9 +22,9 @@ import com.shoplite.models.Session;
 import com.shoplite.hub.statics.Util;
 
 @Path("login")
-public class Login extends BaseService{
+public class LoginService extends BaseService{
 	
-	Logger logger = LoggerFactory.getLogger(Login.class);
+	Logger logger = LoggerFactory.getLogger(LoginService.class);
 	private final static String client_id_header = "shoplite-client-id";
 	
 	@GET

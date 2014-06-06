@@ -8,10 +8,10 @@ import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
 import com.shoplite.hub.services.shop.GetItem;
-import com.shoplite.hub.services.user.AddUser;
-import com.shoplite.hub.services.user.GetShop;
-import com.shoplite.hub.services.user.Login;
-import com.shoplite.hub.services.user.RegisterUser;
+import com.shoplite.hub.services.user.AddUserService;
+import com.shoplite.hub.services.user.GetShopService;
+import com.shoplite.hub.services.user.LoginService;
+import com.shoplite.hub.services.user.RegisterUserService;
 
 
 @ApplicationPath("/service")
@@ -22,10 +22,10 @@ public class StarApplication extends Application{
         final Set<Class<?>> classes = new HashSet<Class<?>>();
         // register root resource
        classes.add(GetItem.class); 
-       classes.add(GetShop.class);
-       classes.add(RegisterUser.class);
-       classes.add(AddUser.class);
-       classes.add(Login.class);
+       classes.add(GetShopService.class);
+       classes.add(RegisterUserService.class);
+       classes.add(AddUserService.class);
+       classes.add(LoginService.class);
        return classes;
 	}
     

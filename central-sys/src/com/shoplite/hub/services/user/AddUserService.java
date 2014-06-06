@@ -23,9 +23,9 @@ import com.shoplite.models.RegistrationTokenizer;
 import com.shoplite.models.User;
 
 @Path("adduser") 
-public class AddUser extends BaseService{
+public class AddUserService extends BaseService{
 	
-	Logger logger = LoggerFactory.getLogger(AddUser.class);
+	Logger logger = LoggerFactory.getLogger(AddUserService.class);
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})

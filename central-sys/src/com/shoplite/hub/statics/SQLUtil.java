@@ -31,12 +31,12 @@ public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs)
 	}
 
 public static boolean addUser(User user,Connection conn,Logger logger) throws Exception {
-	String getValueStatement ="insert into USERS values(?,?,?,?,?,?,?)";
+	String getValueStatement ="insert into USER values(?,?,?,?,?,?,?)";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
 	int userId;
 	try{
-		String seqSQL = "SELECT USERS_SEQ.NEXTVAL FROM DUMMY";
+		String seqSQL = "SELECT USER_SEQ.NEXTVAL FROM DUMMY";
 		pstmt = conn.prepareStatement(seqSQL);
 		rs = pstmt.executeQuery();
 		rs.next();
@@ -75,7 +75,7 @@ public static boolean addUser(User user,Connection conn,Logger logger) throws Ex
 }
 
 public static int getUserId(String email,Connection conn,Logger logger) throws Exception {
-	String getValueStatement ="Select USER_ID from USERS where USER_E_MAIL=?";
+	String getValueStatement ="Select USER_ID from USER where USER_E_MAIL=?";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
 	int userId=-1;
@@ -99,7 +99,7 @@ public static int getUserId(String email,Connection conn,Logger logger) throws E
 
 
 public static boolean updateUser(User user,Connection conn,Logger logger) throws Exception {
-	String updateStatement ="UPDATE USERS SET USER_NAME=?,"+ 
+	String updateStatement ="UPDATE USER SET USER_NAME=?,"+ 
 												"USER_E_MAIL=?,"+ 
 												"USER_GENDER=?,"+
 												"USER_PHNO=?,"+

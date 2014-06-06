@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.shoplite.hub.statics.Util;
 
-public class CorsFilter implements Filter{
+public class RequestFilter implements Filter{
 
 	private  String[] METHODS; 
 	private  String[] HEADERS; 
@@ -56,6 +56,7 @@ public class CorsFilter implements Filter{
 		if(i>=this.METHODS.length)
 		{
 			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
+			return;
 			
 		}
 		
@@ -69,19 +70,17 @@ public class CorsFilter implements Filter{
 			}
 		}
 		
-		if( httpReq.getHeader(Util.session_user_header) ==null)
-		{
-			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
-		}
-		
 		if(i==this.EXPOSED_HEADERS.length)
 		{
 			httpResp.sendError(HttpServletResponse.SC_FORBIDDEN, "Bad Request");
-			
+			return;
 		}
 		
-		
-		
+		if( httpReq.getHeader(Util.session_user_header) ==null)
+		{
+			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
+			return;
+		}
 		
 		if(chain!=null)
 		{

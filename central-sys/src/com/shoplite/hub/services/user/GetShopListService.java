@@ -24,9 +24,9 @@ import com.shoplite.models.Shop;
 import com.shoplite.models.User;
 
 @Path("getshoplist")
-public class GetShopList extends BaseService{
+public class GetShopListService extends BaseService{
 	
-	Logger logger = LoggerFactory.getLogger(GetShopList.class);
+	Logger logger = LoggerFactory.getLogger(GetShopListService.class);
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
