@@ -30,14 +30,14 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>com.shoplite.hub.services.ShopApplication</servlet-name>
+    <servlet-name>com.shoplite.shop.services.ShopApplication</servlet-name>
     <url-pattern>/service/*</url-pattern>
   </servlet-mapping>
   
   
 <filter>
   <filter-name>CorsFilter</filter-name>
-  <filter-class>com.shoplite.hub.filters.CorsFilter</filter-class>
+  <filter-class>com.shoplite.shop.filters.CorsFilter</filter-class>
   <init-param>
     <param-name>cors.allowed.origins</param-name>
     <param-value>*</param-value>
@@ -58,6 +58,15 @@
     <param-name>cors.support.credentials</param-name>
     <param-value>true</param-value>
   </init-param>
+  <init-param>
+    <param-name>star-key</param-name>
+    <param-value>thrhIRI8N0A6H*PAPTasi</param-value>
+  </init-param>
+  <init-param>
+    <param-name>client-key</param-name>
+    <param-value>UBYr789</param-value>
+  </init-param>
+  
 </filter>
 <filter-mapping>
   <filter-name>CorsFilter</filter-name>

@@ -39,6 +39,10 @@
 	    <param-name>RegCookie</param-name>
 	    <param-value>RegistrationCookie</param-value>
 </context-param>
+<context-param>
+	    <param-name>SessionCookie</param-name>
+	    <param-value>SessionCookie</param-value>
+</context-param>
 	
 <filter>
   <filter-name>RequestFilter</filter-name>
@@ -50,10 +54,6 @@
   <init-param>
     <param-name>cors.allowed.methods</param-name>
     <param-value>GET,POST</param-value>
-  </init-param>
-  <init-param>
-    <param-name>cors.allowed.headers</param-name>
-    <param-value>Content-Type</param-value>
   </init-param>
   <init-param>
     <param-name>cors.exposed.headers</param-name>

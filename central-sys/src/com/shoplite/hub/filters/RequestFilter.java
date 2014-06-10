@@ -1,8 +1,6 @@
 package com.shoplite.hub.filters;
 
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.GregorianCalendar;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -17,8 +15,7 @@ import com.shoplite.hub.statics.Util;
 
 public class RequestFilter implements Filter{
 
-	private  String[] METHODS; 
-	private  String[] HEADERS; 
+	private  String[] METHODS;
 	private  String[] EXPOSED_HEADERS; 
 	
 	
@@ -39,9 +36,6 @@ public class RequestFilter implements Filter{
 		
 		HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
-
-        System.out.print(httpReq.getHeader(REQUEST_HEADER_ORIGIN));
-        httpResp.setHeader("Access-Control-Allow-Origin", REQUEST_HEADER_ORIGIN);
         
         String reqMethod = httpReq.getMethod();
 		int i;
@@ -76,12 +70,6 @@ public class RequestFilter implements Filter{
 			return;
 		}
 		
-		if( httpReq.getHeader(Util.session_user_header) ==null)
-		{
-			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
-			return;
-		}
-		
 		if(chain!=null)
 		{
 			chain.doFilter(req, resp);
@@ -91,7 +79,6 @@ public class RequestFilter implements Filter{
 	@Override
 	public void init(FilterConfig config) throws ServletException {
 		this.METHODS = config.getInitParameter("cors.allowed.methods").split(",");
-		this.HEADERS = config.getInitParameter("cors.allowed.headers").split(",");
 		this.EXPOSED_HEADERS = config.getInitParameter("cors.exposed.headers").split(",");
 		Util.CLIENT_ID=config.getInitParameter("client-key");
 		try {

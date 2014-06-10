@@ -5,7 +5,9 @@ import java.util.GregorianCalendar;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.GET;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
@@ -27,9 +29,10 @@ public class LoginService extends BaseService{
 	Logger logger = LoggerFactory.getLogger(LoginService.class);
 	private final static String client_id_header = "shoplite-client-id";
 	
-	@GET
+	@POST
+	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response ) 
+	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String user ) 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -40,14 +43,26 @@ public class LoginService extends BaseService{
 			conn = dataSource.getConnection();
 			
 			validateClient(request);
-			String email=  request.getHeader("user");
+			
+			String email=  gson.fromJson(user,String.class);
 			int user_id = SQLUtil.getUserId(email, conn, logger);
+			
+			if(user_id<1)
+			{
+				throw new  Exception ("Username is incorrect.");
+			}
+			
+			HttpSession sessionCookie = request.getSession(true);
+			sessionCookie.setMaxInactiveInterval(2*60*60);
+			String cookieName = request.getServletContext().getInitParameter("SessionCookie");
+			
+			
 			Session session = new Session(user_id,Util.session_user_timeout);
 			String key = Util.generateRandomString(16);
-			
-			InMemoryDS.getCurrentsessions().setItem(key, session,conn);
-		
+			sessionCookie.setAttribute(cookieName, key);
+			sessionCookie.setAttribute(key, session);
 			response.setHeader(Util.session_user_header,key);
+			
 			return gson.toJson("success");
 			
 		}catch(Exception e)
@@ -62,11 +77,8 @@ public class LoginService extends BaseService{
 	}
 	
 	private void validateClient(HttpServletRequest request) throws Exception{
-		// TODO Auto-generated method stub
 		String client = request.getHeader(client_id_header);
 		GregorianCalendar calendar = new GregorianCalendar();
-//		calendar.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
-//		calendar.set(GregorianCalendar.DAY_OF_WEEK, GregorianCalendar.MONDAY);
 		long time = calendar.getTimeInMillis();
 		int i;
 		for(i =0;i<5;i++)
@@ -91,7 +103,7 @@ public class LoginService extends BaseService{
 		
 		if(i==5)
 		{
-			Exception e = new Exception("Validation Failed");
+			Exception e = new Exception("validation token is incorrect.");
 			throw e;
 		}
 	}

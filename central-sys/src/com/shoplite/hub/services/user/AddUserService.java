@@ -53,22 +53,17 @@ public class AddUserService extends BaseService{
 			Integer token = gson.fromJson(regString, Integer.class);
 			
 			
-			if(reg!=null)
+			if(reg!=null && reg.getToken()==token.intValue())
 			{
 				if(reg.isUserExists())
 				{
-					if(reg.getToken()==token.intValue() )
-					{
-						if(!addUserToDB(reg.getUser(),conn))
-							throw new Exception("Adding new user to DB failed");
-					}
+					if( !updateUser(reg.getUser(),conn))
+						throw new Exception("Updating user to DB failed");
 				}else
 				{
-					if(reg.getToken()==token.intValue() )
-					{
-						if( !updateUser(reg.getUser(),conn))
-							throw new Exception("Updating user to DB failed");
-					}
+					if(!addUserToDB(reg.getUser(),conn))
+						throw new Exception("Adding new user to DB failed");
+					
 				}
 				
 			}else

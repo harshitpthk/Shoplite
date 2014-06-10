@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 
+import com.shoplite.models.Location;
+import com.shoplite.models.Shop;
 import com.shoplite.models.User;
 
 public class SQLUtil {
@@ -103,7 +105,7 @@ public static boolean updateUser(User user,Connection conn,Logger logger) throws
 												"USER_E_MAIL=?,"+ 
 												"USER_GENDER=?,"+
 												"USER_PHNO=?,"+
-												"USER_LANG=?,"+
+												"USER_LAT=?,"+
 												"USER_LONG=? WHERE USER_ID = ?";
 	PreparedStatement pstmt=null;
 	try{
@@ -137,6 +139,38 @@ public static boolean updateUser(User user,Connection conn,Logger logger) throws
 		SQLUtil.close(null, pstmt, null);
 	}
 	
+}
+
+public static Shop getShop(Location loc,Connection conn,Logger logger) throws Exception {
+	String getShopStatement ="Select SHOP_NAME, URL from SHOP where SHOP_LONG=? and SHOP_LAT=?";
+	PreparedStatement pstmt=null;
+	ResultSet rs = null;
+	Shop shop=null;
+	try{
+		pstmt = conn.prepareStatement(getShopStatement);
+		pstmt.setString(1, loc.getLongitude());
+		pstmt.setString(2, loc.getLatitude());
+		rs = pstmt.executeQuery();
+		
+		if(rs.next())
+		{
+			String shopName = rs.getString(1);
+			String url = rs.getString(2);
+			shop = new Shop();
+			shop.setName(shopName);
+			shop.setUrl(url);
+			
+		}
+		
+		close(null, pstmt, rs);
+		return shop;
+	}catch (SQLException e) {
+		throw e;
+		
+	}finally
+	{
+		SQLUtil.close(null, pstmt, rs);
+	}
 }
 
 }

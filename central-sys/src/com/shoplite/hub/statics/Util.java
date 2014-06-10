@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.shoplite.models.Session;
 import com.shoplite.models.User;
@@ -108,21 +109,33 @@ public static int generateRandomNumber(int length) {
 		return str;
 	}
 	
-	public static int vallidateUserSession(HttpServletRequest request, Connection conn)
+	public static int vallidateUserSession(HttpServletRequest request, Connection conn) throws Exception
 	{
-		String sessionKey = request.getHeader(Util.session_user_header);
+		HttpSession session = request.getSession(false);
 		
-		if(sessionKey!=null)
+		
+		if(session==null)
 		{
-			Session session = InMemoryDS.getCurrentsessions().getItem(sessionKey,conn,Session.class);
+			throw new Exception("session not found");
+		}
+		
+		String sessionKey = request.getHeader(Util.session_user_header);
+		String cookieName = request.getServletContext().getInitParameter("SessionCookie");
+		
+		String  serverKey = (String)session.getAttribute(cookieName);
+		
+		
+		if(sessionKey!=null && sessionKey.equalsIgnoreCase(serverKey))
+		{
+			Session session_user = (Session)session.getAttribute(sessionKey);
 			
-			if(session!=null && session.isSessionVallid())
+			if(session_user!=null && session_user.isSessionVallid())
 			{
-				return session.getUserId();
+				return session_user.getUserId();
 			}
 		}
 		
-		return -1;
+		throw new Exception("session validation failed");
 	}
 	
 }

@@ -17,15 +17,13 @@ import com.shoplite.hub.test.GetShopTest;
 import com.shoplite.hub.test.LoginTest;
 import com.shoplite.hub.test.RegisterUserTest;
 import com.shoplite.hub.test.TestInterface;
-import com.shoplite.models.RegistrationTokenizer;
-import com.shoplite.models.User;
 import com.shoplite.models.Util;
 
 
 public class Main {
 	
 	private static final String HEADER_KEY = "Access-Control-Allow-Star";
-	private  static String urlAddress = "http://starp1940130226trial.hanatrial.ondemand.com/central-sys/service/";
+	private  static String urlAddress = "https://starp1940130226trial.hanatrial.ondemand.com/central-sys/service/";
 	private static String HEADER_VALUE = "shoplite"; 
 	private static String client_id="";
 	private static String session_id="";
@@ -34,12 +32,6 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		TestInterface test = new GetItemTest();
-//		System.out.println(excutePost(test));
-//		
-//		System.out.println("Calling get shop ");
-//		test = new GetShopTest();
-//		System.out.println(excutePost(test));
-//		
 		System.out.println("Register user ");
 		test = new RegisterUserTest();
 		 
@@ -71,6 +63,10 @@ public class Main {
 		
 		System.out.println(((LoginTest)test).sessionID);
 		
+		test = new GetShopTest(((LoginTest)test).sessionID);
+		System.out.println(excutePost(test));
+		
+		
 	}
 
 	/* (non-Java-doc)
@@ -88,8 +84,8 @@ public class Main {
 	      //Create connection
 	      URL url = new URL(urlAddress+test.getServiceName());
 	      
-	      //Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy", 8080));
-	      connection = (HttpURLConnection)url.openConnection();
+	      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy", 8080));
+	      connection = (HttpURLConnection)url.openConnection(proxy);
 	      connection.setReadTimeout(5000);
 	      
 	      //System.out.println(connection.getResponseCode());
@@ -97,11 +93,20 @@ public class Main {
 	      connection.setRequestProperty("content-type","application/json; charset=utf-8");
 	     connection.setDoOutput(true); 
 	     connection.setRequestProperty(HEADER_KEY, HEADER_VALUE);
-	     connection.setRequestProperty(Util.session_user_header, session_id);
 	     connection.setRequestProperty("user", user_id);
 	     connection.setRequestProperty("Cookie", session_id);
-			
+	     
 	     test.writeHeaders(connection);
+	     
+	     if("POST".equalsIgnoreCase( test.getMethodType()))
+	      {
+	    	//Send request
+	    	  DataOutputStream wr = new DataOutputStream (
+		                  connection.getOutputStream ());
+		      wr.writeBytes (test.getPostObject());
+		      wr.flush ();
+		      wr.close ();
+	      }
 	     
 	     boolean redirect = false;
 	     
@@ -123,12 +128,11 @@ public class Main {
 	  
 
 	 		// open the new connnection again
-	 		connection = (HttpURLConnection) new URL(newUrl).openConnection();
+	 		connection = (HttpURLConnection) new URL(newUrl).openConnection(proxy);
 	 		  connection.setRequestMethod(test.getMethodType());
 		      connection.setRequestProperty("content-type","application/json; charset=utf-8");
 		     connection.setDoOutput(true); 
 		     connection.setRequestProperty(HEADER_KEY, HEADER_VALUE);
-		     connection.setRequestProperty("shoplite-user-token", session_id);
 		     connection.setRequestProperty("user", user_id);
 		     connection.setRequestProperty("Cookie", session_id);
 		     test.writeHeaders(connection);
@@ -137,16 +141,7 @@ public class Main {
 	  
 	 	}
 	  
-	      if("POST".equalsIgnoreCase( test.getMethodType()))
-	      {
-	    	//Send request
-	    	  connection.setDoInput(true);
-		      DataOutputStream wr = new DataOutputStream (
-		                  connection.getOutputStream ());
-		      wr.writeBytes (test.getPostObject());
-		      wr.flush ();
-		      wr.close ();
-	      }
+	      
 	          
 	      //Get Response	
 	      InputStream is = connection.getInputStream();

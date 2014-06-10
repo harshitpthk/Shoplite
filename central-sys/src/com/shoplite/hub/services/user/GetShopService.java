@@ -41,11 +41,11 @@ public class GetShopService extends BaseService{
 			int user= Util.vallidateUserSession(request,conn);
 			
 			if(user==-1)
-				throw new Exception("Session not found");
+				throw new Exception("User not found for session");
 			
 			Location loc = gson.fromJson(location, Location.class);
 			
-			Shop shop = getShopFromLocation(loc);
+			Shop shop = getShopFromLocation(loc,conn);
 			
 			if(shop==null)
 			{
@@ -66,12 +66,10 @@ public class GetShopService extends BaseService{
 	
 	}
 	
-	public Shop getShopFromLocation(Location loc)
+	public Shop getShopFromLocation(Location loc,Connection conn) throws Exception
 	{
-		Shop shop =new Shop();
-		shop.setName("Shop");
-		shop.setId("1234");
-		shop.setUrl("http://localhost:8080/central-sys/HelloWorldServlet");
+		
+		Shop shop =SQLUtil.getShop(loc,conn,logger);
 		return shop;
 	}
 	
