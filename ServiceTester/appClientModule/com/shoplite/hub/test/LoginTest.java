@@ -2,7 +2,6 @@ package com.shoplite.hub.test;
 
 import java.net.HttpURLConnection;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 import com.shoplite.models.Util;
 
@@ -19,24 +18,22 @@ public class LoginTest implements TestInterface {
 	@Override
 	public String getMethodType() {
 		// TODO Auto-generated method stub
-		return "GET";
+		return "POST";
 	}
 
 	@Override
 	public String getPostObject() {
 		// TODO Auto-generated method stub
-		return "";
+		return "srpkrishna@gmail.com";
 	}
 
 	@Override
 	public void writeHeaders(HttpURLConnection conn) {
 		// TODO Auto-generated method stub
 		GregorianCalendar calendar = new GregorianCalendar();
-		//calendar.setTimeZone(TimeZone.getTimeZone("Asia/Calcutta"));
-		//calendar.set(GregorianCalendar.DAY_OF_WEEK, GregorianCalendar.MONDAY);
 		long time = calendar.getTimeInMillis();
 		
-		int factor = (int)time/1000;
+		int factor = (int)time/(63000);
 		
 		String seed = Util.generateSeed((long)factor,8);
 		String authKey = key+seed;

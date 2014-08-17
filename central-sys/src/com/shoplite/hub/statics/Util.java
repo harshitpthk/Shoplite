@@ -9,9 +9,9 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.shoplite.models.Session;
-import com.shoplite.models.User;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -28,7 +28,7 @@ public  static String CLIENT_ID=null;
 public final static String session_user_header = "shoplite-user-token";
 public final static String session_shop_header = "shoplite-shop-token";
 public final static long session_user_timeout = 60*60*2;
-public final static long session_shop_timeout = 60*60*2;
+public final static long session_shop_timeout = 60*60*5;
 
 public static String generateRandomString(int length) {
 		
@@ -108,21 +108,42 @@ public static int generateRandomNumber(int length) {
 		return str;
 	}
 	
-	public static int vallidateUserSession(HttpServletRequest request, Connection conn)
+	public static Session vallidateUserSession(HttpServletRequest request, Connection conn) throws Exception
 	{
-		String sessionKey = request.getHeader(Util.session_user_header);
+		HttpSession session = request.getSession(false);
 		
-		if(sessionKey!=null)
+		
+		if(session==null)
 		{
-			Session session = InMemoryDS.getCurrentsessions().getItem(sessionKey,conn,Session.class);
-			
-			if(session!=null && session.isSessionVallid())
-			{
-				return session.getUserId();
-			}
+			throw new Exception("session not found");
 		}
 		
-		return -1;
+		String sessionKey = request.getHeader(Util.session_user_header);
+		String cookieName = request.getServletContext().getInitParameter("SessionCookie");
+		
+		String  serverKey = (String)session.getAttribute(cookieName);
+		
+		
+		if(sessionKey!=null && sessionKey.equalsIgnoreCase(serverKey))
+		{
+			Session session_user = (Session)session.getAttribute(sessionKey);
+			
+			if(session_user!=null && session_user.isSessionVallid())
+			{
+				return session_user;
+				
+			}else if(session_user ==null)
+			{
+				throw new Exception("session object missing");
+			}else
+			{
+				throw new Exception("session time out");
+			}
+			
+			
+		}
+		throw new Exception("session validation failed");
+
 	}
 	
 }

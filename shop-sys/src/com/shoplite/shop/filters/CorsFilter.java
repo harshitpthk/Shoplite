@@ -40,45 +40,46 @@ public class CorsFilter implements Filter{
 		HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
 
-        System.out.print(httpReq.getHeader(REQUEST_HEADER_ORIGIN));
-        httpResp.setHeader("Access-Control-Allow-Origin", REQUEST_HEADER_ORIGIN);
-        
-        String reqMethod = httpReq.getMethod();
-		int i;
-		for(i=0;i<this.METHODS.length;i++)
-		{
-			if(this.METHODS[i].equalsIgnoreCase(reqMethod))
-			{
-				break;
-			}
-		}
-		
-		if(i>=this.METHODS.length)
-		{
-			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
-			
-		}
-		
-		for(i=0;i<this.EXPOSED_HEADERS.length;i++)
-		{
-			String header =httpReq.getHeader(this.EXPOSED_HEADERS[i]);
-			
-			if(HEADER_VALUE.equalsIgnoreCase(header))
-			{
-				break;
-			}
-		}
-		
-		if(httpReq.getHeader(Util.session_shop_header)==null &&  httpReq.getHeader(Util.session_user_header) ==null)
-		{
-			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
-		}
-		
-		if(i==this.EXPOSED_HEADERS.length)
-		{
-			httpResp.sendError(HttpServletResponse.SC_FORBIDDEN, "Bad Request");
-			
-		}
+//        System.out.print(httpReq.getHeader(REQUEST_HEADER_ORIGIN));
+//        httpResp.setHeader("Access-Control-Allow-Origin", REQUEST_HEADER_ORIGIN);
+//        
+//        String reqMethod = httpReq.getMethod();
+//		int i;
+//		for(i=0;i<this.METHODS.length;i++)
+//		{
+//			if(this.METHODS[i].equalsIgnoreCase(reqMethod))
+//			{
+//				break;
+//			}
+//		}
+//		
+//		if(i>=this.METHODS.length)
+//		{
+//			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
+//			
+//		}
+//		
+//		for(i=0;i<this.EXPOSED_HEADERS.length;i++)
+//		{
+//			String header =httpReq.getHeader(this.EXPOSED_HEADERS[i]);
+//			
+//			if(HEADER_VALUE.equalsIgnoreCase(header))
+//			{
+//				break;
+//			}
+//		}
+//		
+//		if(httpReq.getHeader(Util.session_shop_header)==null &&  httpReq.getHeader(Util.session_user_header) ==null)
+//		{
+//			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
+//			return;
+//		}
+//		
+//		if(i==this.EXPOSED_HEADERS.length)
+//		{
+//			httpResp.sendError(HttpServletResponse.SC_FORBIDDEN, "Bad Request");
+//			return;
+//		}
 		
 		
 		
@@ -94,6 +95,7 @@ public class CorsFilter implements Filter{
 		this.METHODS = config.getInitParameter("cors.allowed.methods").split(",");
 		this.HEADERS = config.getInitParameter("cors.allowed.headers").split(",");
 		this.EXPOSED_HEADERS = config.getInitParameter("cors.exposed.headers").split(",");
+		Util.starURL = config.getInitParameter("ServerURL");
 		Util.CLIENT_ID =  config.getInitParameter(CLIENT_KEY);
 		try {
 			Util.KEY_ALGO = Util.getKey(config.getInitParameter(STAR_KEY));

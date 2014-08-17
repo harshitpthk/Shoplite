@@ -4,10 +4,17 @@ import java.net.HttpURLConnection;
 
 import com.google.gson.Gson;
 import com.shoplite.models.Location;
+import com.shoplite.models.Util;
 
 public class GetShopTest implements TestInterface{
 	public String servicename="getshop"; 
 	public String serviceType = "POST";
+	private String sessionID="";
+	
+	public GetShopTest(String session)
+	{
+		this.sessionID= session;
+	}
 	
 	@Override
 	public String getServiceName() {
@@ -23,7 +30,7 @@ public class GetShopTest implements TestInterface{
 	public String getPostObject() {
 		// TODO Auto-generated method stub
 		
-		Location loc = new Location("long", "lat");
+		Location loc = new Location("11111", "11111");
 		
 		
 		Gson gson = new Gson();
@@ -35,7 +42,8 @@ public class GetShopTest implements TestInterface{
 	@Override
 	public void writeHeaders(HttpURLConnection conn) {
 		// TODO Auto-generated method stub
-		
+		conn.addRequestProperty(Util.session_user_header, sessionID);
+	     
 	}
 	@Override
 	public void readHeaders(HttpURLConnection conn) {

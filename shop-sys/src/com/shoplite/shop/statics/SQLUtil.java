@@ -7,7 +7,9 @@ import java.sql.SQLException;
 
 import org.slf4j.Logger;
 
-import com.shoplite.models.User;
+import com.shoplite.models.Item;
+import com.shoplite.models.PaymentDetail;
+
 
 public class SQLUtil {
 
@@ -30,64 +32,25 @@ public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs)
 		}
 	}
 
-public static boolean addUser(User user,Connection conn,Logger logger) throws Exception {
-	String getValueStatement ="insert into USERS values(?,?,?,?,?,?,?)";
-	PreparedStatement pstmt=null;
-	ResultSet rs = null;
-	int userId;
-	try{
-		String seqSQL = "SELECT USERS_SEQ.NEXTVAL FROM DUMMY";
-		pstmt = conn.prepareStatement(seqSQL);
-		rs = pstmt.executeQuery();
-		rs.next();
-		userId = rs.getInt(1);
-		close(null, pstmt, rs);
-		
-		
-		pstmt = conn.prepareStatement(getValueStatement);
-		pstmt.setInt(1, userId);
-		pstmt.setString(2, user.getName());
-		pstmt.setString(3, user.getEmail());
-		pstmt.setString(4, "");
-		pstmt.setString(5, user.getPhno());
-		pstmt.setString(6, user.getLocation().getLatitude());
-		pstmt.setString(7,  user.getLocation().getLongitude());
-		
-		int row = pstmt.executeUpdate();
-		SQLUtil.close(null, pstmt, rs);
-		
-		if(row==1)
-		{
-			
-			return true;
-		}
-		
-		return false;
-		
-	} catch (SQLException e) {
-		throw e;
-		
-	}finally
-	{
-		SQLUtil.close(null, pstmt, rs);
-	}
+public static Item getItem(int itemId, Connection conn, Logger logger) throws SQLException {
 	
-}
-
-public static int getUserId(String email,Connection conn,Logger logger) throws Exception {
-	String getValueStatement ="Select USER_ID from USERS where USER_E_MAIL=?";
+	String getItemStatement ="Select ITEM_DESC,ITEM_PRICE,ITEM_IMG from ITEM where ITEM_ID=?";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
-	int userId=-1;
+	Item item=null;
 	try{
-		pstmt = conn.prepareStatement(getValueStatement);
-		pstmt.setString(1, email);
+		pstmt = conn.prepareStatement(getItemStatement);
+		pstmt.setInt(1, itemId);
 		rs = pstmt.executeQuery();
 		if(rs.next())
-			userId = rs.getInt(1);
+		{
+			item = new Item( rs.getString(1),rs.getDouble(2),itemId,rs.getString(3));
+			
+		}
 		
 		close(null, pstmt, rs);
-		return userId;
+		return item;
+		
 	}catch (SQLException e) {
 		throw e;
 		
@@ -97,46 +60,35 @@ public static int getUserId(String email,Connection conn,Logger logger) throws E
 	}
 }
 
-
-public static boolean updateUser(User user,Connection conn,Logger logger) throws Exception {
-	String updateStatement ="UPDATE USERS SET USER_NAME=?,"+ 
-												"USER_E_MAIL=?,"+ 
-												"USER_GENDER=?,"+
-												"USER_PHNO=?,"+
-												"USER_LANG=?,"+
-												"USER_LONG=? WHERE USER_ID = ?";
-	PreparedStatement pstmt=null;
-	try{
-		
-		
-		pstmt = conn.prepareStatement(updateStatement);
-		pstmt.setInt(7, user.getId());
-		pstmt.setString(1, user.getName());
-		pstmt.setString(2, user.getEmail());
-		pstmt.setString(3, "");
-		pstmt.setString(4, user.getPhno());
-		pstmt.setString(5, user.getLocation().getLatitude());
-		pstmt.setString(6,  user.getLocation().getLongitude());
-		
-		int row = pstmt.executeUpdate();
-		SQLUtil.close(null, pstmt, null);
-		
-		if(row==1)
-		{
-			
-			return true;
-		}
-		
-		return false;
-		
-	} catch (SQLException e) {
-		throw e;
-		
-	}finally
-	{
-		SQLUtil.close(null, pstmt, null);
-	}
+public static int createPayment(Connection conn, 
+		PaymentDetail payment) throws SQLException {
 	
-}
+		String seqSQL = "SELECT PAYMENT_SEQ.NEXTVAL FROM DUMMY";
+		PreparedStatement pstmt = conn.prepareStatement(seqSQL);
+		ResultSet rs = pstmt.executeQuery();
+		rs.next();
+		int paymentID = rs.getInt(1);
+		SQLUtil.close(null, pstmt, rs);
+		
+	
+		
+		String insert = "INSERT INTO ORDERS(PAYMENT_ID,PAYMENT_AMOUNT,PAYMENT_DATE,MODE,REFNO) VALUES(?,?,?)";
+		
+		pstmt = conn.prepareStatement(insert);
+		pstmt.setInt(1, paymentID);
+		pstmt.setDouble(2, payment.getAmount());
+		pstmt.setString(3, "CURRENTTIMESTAMP");
+		pstmt.setInt(1, payment.getMode().ordinal());
+		pstmt.setInt(1, payment.getReferenceNumber());
+		
+		pstmt.executeUpdate();
+		
+		SQLUtil.close(null, pstmt, null);
+		
+		return paymentID;
+		
+	}
+
+
 
 }
