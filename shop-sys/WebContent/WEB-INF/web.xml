@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>central-sys</display-name>
+  <display-name>shop-sys</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -9,11 +9,11 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
+    <servlet>
     <description></description>
     <display-name>HelloWorldServlet</display-name>
     <servlet-name>HelloWorldServlet</servlet-name>
-    <servlet-class>com.shoplite.hub.servlets.HelloWorldServlet</servlet-class>
+    <servlet-class>com.shoplite.shop.servlets.HelloWorldServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>HelloWorldServlet</servlet-name>
@@ -21,25 +21,20 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>com.shoplite.hub.services.StarApplication</servlet-name>
+    <servlet-name>com.shoplite.shop.services.ShopApplication</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>javax.ws.rs.Application</param-name>
-      <param-value>com.shoplite.hub.services.StarApplication</param-value>
+      <param-value>com.shoplite.shop.services.ShopApplication</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>com.shoplite.hub.services.StarApplication</servlet-name>
+    <servlet-name>com.shoplite.hub.services.ShopApplication</servlet-name>
     <url-pattern>/service/*</url-pattern>
   </servlet-mapping>
-  	
-	
-<context-param>
-	    <param-name>RegCookie</param-name>
-	    <param-value>RegistrationCookie</param-value>
-</context-param>
-	
+  
+  
 <filter>
   <filter-name>CorsFilter</filter-name>
   <filter-class>com.shoplite.hub.filters.CorsFilter</filter-class>
@@ -60,14 +55,6 @@
     <param-value>Access-Control-Allow-Star</param-value>
   </init-param>
   <init-param>
-    <param-name>star-key</param-name>
-    <param-value>thrhIRI8N0A6H*PAPTasi</param-value>
-  </init-param>
-  <init-param>
-    <param-name>client-key</param-name>
-    <param-value>UBYr789</param-value>
-  </init-param>
-  <init-param>
     <param-name>cors.support.credentials</param-name>
     <param-value>true</param-value>
   </init-param>
@@ -79,6 +66,5 @@
 <resource-ref>
     <res-ref-name>jdbc/DefaultDB</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
-</resource-ref>    
- 
+</resource-ref>   
 </web-app>

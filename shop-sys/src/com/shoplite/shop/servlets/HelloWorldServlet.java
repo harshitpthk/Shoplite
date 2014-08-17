@@ -1,4 +1,4 @@
-package com.shoplite.hub.servlets;
+package com.shoplite.shop.servlets;
 
 import java.io.IOException;
 
@@ -6,7 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class HelloWorldServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -24,10 +23,6 @@ public class HelloWorldServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().println("Hello world!");
-		HttpSession session = request.getSession(true);
-		session.setMaxInactiveInterval(60*60);
-		session.setAttribute("pfmstate", "56tyfhgy");
-		
 		String url = request.getRequestURL().toString();
 		String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath() + "/";
 		response.getWriter().println("baseURL="+baseURL);

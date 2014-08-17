@@ -3,17 +3,16 @@ package com.shoplite.hub.test;
 import java.net.HttpURLConnection;
 
 import com.google.gson.Gson;
-import com.shoplite.models.RegistrationTokenizer;
 
 public class AddUserTest implements TestInterface{
 	
-	public AddUserTest(RegistrationTokenizer reg)
+	public AddUserTest(Integer regToken)
 	{
 		super();
-		this.reg =reg;
+		this.regToken =regToken;
 	}
 	
-	public RegistrationTokenizer reg;
+	public Integer regToken;
 	public String servicename="adduser"; 
 	public String serviceType = "POST";
 	public String client_id="";
@@ -33,8 +32,11 @@ public class AddUserTest implements TestInterface{
 
 		
 		Gson gson = new Gson();
+
 		//System.out.println(gson.toJson(this.reg));
-		return gson.toJson(this.reg);
+		
+		System.out.println(gson.toJson(this.regToken));
+		return gson.toJson(this.regToken);
 		
 		
 	}

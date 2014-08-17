@@ -19,7 +19,6 @@ import com.shoplite.hub.services.BaseService;
 import com.shoplite.hub.statics.InMemoryDS;
 import com.shoplite.hub.statics.SQLUtil;
 import com.shoplite.models.Session;
-import com.shoplite.models.User;
 import com.shoplite.hub.statics.Util;
 
 @Path("login")

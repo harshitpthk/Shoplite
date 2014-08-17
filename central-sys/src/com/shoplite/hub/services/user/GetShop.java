@@ -20,7 +20,6 @@ import com.shoplite.hub.statics.SQLUtil;
 import com.shoplite.hub.statics.Util;
 import com.shoplite.models.Location;
 import com.shoplite.models.Shop;
-import com.shoplite.models.User;
 
 @Path("getshop") 
 public class GetShop extends BaseService{

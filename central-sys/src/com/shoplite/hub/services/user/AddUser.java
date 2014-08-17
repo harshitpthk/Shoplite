@@ -2,10 +2,14 @@ package com.shoplite.hub.services.user;
 
 import java.sql.Connection;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -13,7 +17,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.shoplite.hub.services.BaseService;
-import com.shoplite.hub.statics.InMemoryDS;
 import com.shoplite.hub.statics.SQLUtil;
 import com.shoplite.hub.statics.Util;
 import com.shoplite.models.RegistrationTokenizer;
@@ -26,7 +29,7 @@ public class AddUser extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String addUser(String regString)
+	public String addUser(@Context HttpServletRequest request, @Context HttpServletResponse response,String regString)
 	{
 		
 		String user_code ="";
@@ -37,41 +40,50 @@ public class AddUser extends BaseService{
 		{
 			initDB();
 			conn = dataSource.getConnection();
-			RegistrationTokenizer reg = gson.fromJson(regString, RegistrationTokenizer.class);
+			
+			HttpSession session = request.getSession(false);
+			String cookieName = request.getServletContext().getInitParameter("RegCookie");
+			
+			if(session==null)
+			{
+				throw new Exception("session not found");
+			}
+			
+			RegistrationTokenizer reg =(RegistrationTokenizer) session.getAttribute(cookieName);
+			Integer token = gson.fromJson(regString, Integer.class);
+			
+			
 			if(reg!=null)
 			{
-				String user_email=null;
 				if(reg.isUserExists())
 				{
-					user_email =InMemoryDS.getToBeRegisteredUsers().getItem(reg.getValidator(),conn,String.class);
-					if(user_email!=null && reg.getUser().getEmail().equalsIgnoreCase(user_email) )
+					if(reg.getToken()==token.intValue() )
 					{
-						InMemoryDS.getToBeRegisteredUsers().deleteItem(reg.getValidator(), conn);
 						if(!addUserToDB(reg.getUser(),conn))
 							throw new Exception("Adding new user to DB failed");
 					}
 				}else
 				{
-					user_email =InMemoryDS.getToBeRegisteredUsers().getItem(reg.getValidator(),conn,String.class);
-					if(user_email!=null && reg.getUser().getEmail().equalsIgnoreCase(user_email))
+					if(reg.getToken()==token.intValue() )
 					{
-						InMemoryDS.getToBeRegisteredUsers().deleteItem(reg.getValidator(), conn);
-						
 						if( !updateUser(reg.getUser(),conn))
 							throw new Exception("Updating user to DB failed");
 					}
 				}
 				
-				if(user_email==null)
-				{
-					throw new Exception("user not found failed");
-				}
+			}else
+			{
+				throw new Exception("registration details not found");
 			}
 			
 			user_code =Util.encrypt(Util.CLIENT_ID);
+			session.invalidate();
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
 			return getError();
 		}finally
 		{
@@ -89,8 +101,6 @@ public class AddUser extends BaseService{
 	
 	private boolean updateUser(User user,Connection conn) throws Exception
 	{
-		int id = SQLUtil.getUserId(user.getEmail(), conn, logger);
-		user.setId(id);
 		SQLUtil.updateUser(user, conn, logger);
 		return true;
 	}

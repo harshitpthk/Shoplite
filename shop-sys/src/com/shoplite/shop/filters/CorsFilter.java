@@ -1,4 +1,4 @@
-package com.shoplite.hub.filters;
+package com.shoplite.shop.filters;
 
 import java.io.IOException;
 import java.util.Enumeration;
@@ -13,7 +13,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.shoplite.hub.statics.Util;
+import com.shoplite.shop.statics.Util;
 
 public class CorsFilter implements Filter{
 
@@ -69,7 +69,7 @@ public class CorsFilter implements Filter{
 			}
 		}
 		
-		if( httpReq.getHeader(Util.session_user_header) ==null)
+		if(httpReq.getHeader(Util.session_shop_header)==null &&  httpReq.getHeader(Util.session_user_header) ==null)
 		{
 			httpResp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bad Resquest");
 		}
@@ -94,14 +94,13 @@ public class CorsFilter implements Filter{
 		this.METHODS = config.getInitParameter("cors.allowed.methods").split(",");
 		this.HEADERS = config.getInitParameter("cors.allowed.headers").split(",");
 		this.EXPOSED_HEADERS = config.getInitParameter("cors.exposed.headers").split(",");
-		Util.CLIENT_ID=config.getInitParameter("client-key");
+		Util.CLIENT_ID =  config.getInitParameter(CLIENT_KEY);
 		try {
-			Util.KEY_ALGO=Util.getKey(config.getInitParameter("star-key"));
+			Util.KEY_ALGO = Util.getKey(config.getInitParameter(STAR_KEY));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-				
 	}
 
 }
