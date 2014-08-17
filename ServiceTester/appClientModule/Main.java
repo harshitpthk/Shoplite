@@ -16,14 +16,16 @@ import com.shoplite.hub.test.GetItemTest;
 import com.shoplite.hub.test.GetShopTest;
 import com.shoplite.hub.test.LoginTest;
 import com.shoplite.hub.test.RegisterUserTest;
+import com.shoplite.hub.test.ShopLoginTest;
 import com.shoplite.hub.test.TestInterface;
+import com.shoplite.models.Shop;
 import com.shoplite.models.Util;
 
 
 public class Main {
 	
 	private static final String HEADER_KEY = "Access-Control-Allow-Star";
-	private  static String urlAddress = "https://starp1940130226trial.hanatrial.ondemand.com/central-sys/service/";
+	private  static String urlAddress = "https://starp1940130226trial.hanatrial.ondemand.com/central-sys/service/user/";
 	private static String HEADER_VALUE = "shoplite"; 
 	private static String client_id="";
 	private static String session_id="";
@@ -63,9 +65,18 @@ public class Main {
 		
 		System.out.println(((LoginTest)test).sessionID);
 		
+		String token =((LoginTest)test).sessionID;
 		test = new GetShopTest(((LoginTest)test).sessionID);
-		System.out.println(excutePost(test));
+		String shopStr= excutePost(test);
+		System.out.println(shopStr);
+	
 		
+		Shop shop = gson.fromJson(shopStr, Shop.class);
+		
+		urlAddress = "https://"+shop.getUrl()+"service/user/";
+		
+		test = new ShopLoginTest(token,session_id);
+		System.out.println(excutePost(test));
 		
 	}
 
@@ -86,7 +97,7 @@ public class Main {
 	      
 	      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy", 8080));
 	      connection = (HttpURLConnection)url.openConnection(proxy);
-	      connection.setReadTimeout(5000);
+	      connection.setReadTimeout(2000*60);
 	      
 	      //System.out.println(connection.getResponseCode());
 	      connection.setRequestMethod(test.getMethodType());
@@ -95,6 +106,7 @@ public class Main {
 	     connection.setRequestProperty(HEADER_KEY, HEADER_VALUE);
 	     connection.setRequestProperty("user", user_id);
 	     connection.setRequestProperty("Cookie", session_id);
+	     connection.setConnectTimeout(60*1000*3);
 	     
 	     test.writeHeaders(connection);
 	     

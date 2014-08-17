@@ -20,8 +20,8 @@ import com.shoplite.hub.services.BaseService;
 import com.shoplite.hub.statics.SQLUtil;
 import com.shoplite.hub.statics.Util;
 import com.shoplite.models.Location;
+import com.shoplite.models.Session;
 import com.shoplite.models.Shop;
-import com.shoplite.models.User;
 
 @Path("getshoplist")
 public class GetShopListService extends BaseService{
@@ -40,11 +40,11 @@ public class GetShopListService extends BaseService{
 			
 			initDB();
 			conn = dataSource.getConnection();
+			Session user_session= Util.vallidateUserSession(request,conn);
 			
-			int user= Util.vallidateUserSession(request,conn);
+			if(user_session.getUserId()==-1)
+				throw new Exception("User not found for session");
 			
-			if(user==-1)
-				throw new Exception("Session not found");
 			
 			Location loc = gson.fromJson(location, Location.class);
 			

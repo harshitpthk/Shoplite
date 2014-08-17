@@ -29,6 +29,7 @@ public final static String session_user_header = "shoplite-user-token";
 public final static String session_shop_header = "shoplite-shop-token";
 public final static long session_user_timeout = 60*60*2;
 public final static long session_shop_timeout = 60*60*2;
+public static String starURL=null; 
 
 public static String generateRandomString(int length) {
 		
@@ -123,6 +124,21 @@ public static int generateRandomNumber(int length) {
 		}
 		
 		return -1;
+	}
+	
+	public static String getInvalidSessionError()
+	{
+		return "{\"status\": \"failure\", \"cause\": \"invalid session\"}";
+	}
+	
+	public static String getInternalError()
+	{
+		return "{\"status\": \"failure\", \"cause\": \"internal error occured\"}";
+	}
+	
+	public static String getSuccessMessage()
+	{
+		return "{\"status\": \"success\"}";
 	}
 	
 }

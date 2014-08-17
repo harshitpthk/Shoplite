@@ -49,7 +49,7 @@ public class RegisterUserService extends BaseService{
 			if(user.getEmail()==null || user.getPhno()==null)
 				throw new Exception("user data is not vallid");
 			
-			int id = SQLUtil.getUserId(user.getEmail(), conn, logger);
+			int id = SQLUtil.getUserId(user.getEmail(), conn);
 			
 			if(id>99999)
 			{

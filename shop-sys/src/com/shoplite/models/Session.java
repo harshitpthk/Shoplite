@@ -6,6 +6,7 @@ public class Session {
 	private long timeStamp;
 	private int user_id;
 	private long timeOut;
+	private int userOrderId;
 	
 	public Session(int user_id, long timeOut) {
 		super();
@@ -35,6 +36,12 @@ public class Session {
 			return false;
 		}else
 			return true;
+	}
+	public int getUserOrderId() {
+		return userOrderId;
+	}
+	public void setUserOrderId(int userOrderId) {
+		this.userOrderId = userOrderId;
 	}
 
 }

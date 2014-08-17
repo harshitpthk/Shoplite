@@ -90,13 +90,13 @@ public class AddUserService extends BaseService{
 	
 	private boolean addUserToDB(User user,Connection conn) throws Exception
 	{
-		SQLUtil.addUser(user, conn, logger);
+		SQLUtil.addUser(user, conn);
 		return true;
 	}
 	
 	private boolean updateUser(User user,Connection conn) throws Exception
 	{
-		SQLUtil.updateUser(user, conn, logger);
+		SQLUtil.updateUser(user, conn);
 		return true;
 	}
 

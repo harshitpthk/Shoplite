@@ -13,8 +13,8 @@ import com.shoplite.shop.services.user.PackItemsService;
 import com.shoplite.shop.services.user.SubmitOrderService;
 
 
-@ApplicationPath("/service")
-public class ShopApplication extends Application{
+@ApplicationPath("/service/user")
+public class UserApplication extends Application{
 	
 	@Override
     public Set<Class<?>> getClasses() {

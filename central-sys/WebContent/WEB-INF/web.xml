@@ -21,19 +21,46 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>com.shoplite.hub.services.StarApplication</servlet-name>
+    <servlet-name>com.shoplite.hub.services.StarUserApplication</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>javax.ws.rs.Application</param-name>
-      <param-value>com.shoplite.hub.services.StarApplication</param-value>
+      <param-value>com.shoplite.hub.services.StarUserApplication</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>com.shoplite.hub.services.StarApplication</servlet-name>
-    <url-pattern>/service/*</url-pattern>
+    <servlet-name>com.shoplite.hub.services.StarUserApplication</servlet-name>
+    <url-pattern>/service/user/*</url-pattern>
   </servlet-mapping>
-  	
+  
+  <servlet>
+    <servlet-name>com.shoplite.hub.services.StarShopApplication</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.shoplite.hub.services.StarShopApplication</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com.shoplite.hub.services.StarShopApplication</servlet-name>
+    <url-pattern>/service/shop/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>com.shoplite.hub.services.StarShopAdminApplication</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.shoplite.hub.services.StarShopAdminApplication</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com.shoplite.hub.services.StarShopAdminApplication</servlet-name>
+    <url-pattern>/service/shopadmin/*</url-pattern>
+  </servlet-mapping>	
 	
 <context-param>
 	    <param-name>RegCookie</param-name>

@@ -21,19 +21,38 @@
   </servlet-mapping>
   
   <servlet>
-    <servlet-name>com.shoplite.shop.services.ShopApplication</servlet-name>
+    <servlet-name>com.shoplite.shop.services.AdminApplication</servlet-name>
     <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
     <init-param>
       <param-name>javax.ws.rs.Application</param-name>
-      <param-value>com.shoplite.shop.services.ShopApplication</param-value>
+      <param-value>com.shoplite.shop.services.AdminApplication</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>com.shoplite.shop.services.ShopApplication</servlet-name>
-    <url-pattern>/service/*</url-pattern>
+    <servlet-name>com.shoplite.shop.services.AdminApplication</servlet-name>
+    <url-pattern>/service/admin/*</url-pattern>
   </servlet-mapping>
   
+  
+  <servlet>
+    <servlet-name>com.shoplite.shop.services.UserApplication</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.shoplite.shop.services.UserApplication</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com.shoplite.shop.services.UserApplication</servlet-name>
+    <url-pattern>/service/user/*</url-pattern>
+  </servlet-mapping>
+  
+ <context-param>
+	    <param-name>SessionCookie</param-name>
+	    <param-value>SessionCookie</param-value>
+</context-param>
   
 <filter>
   <filter-name>CorsFilter</filter-name>
@@ -65,6 +84,11 @@
   <init-param>
     <param-name>client-key</param-name>
     <param-value>UBYr789</param-value>
+  </init-param>
+  
+  <init-param>
+    <param-name>ServerURL</param-name>
+    <param-value>https://starp1940130226trial.hanatrial.ondemand.com/central-sys/</param-value>
   </init-param>
   
 </filter>

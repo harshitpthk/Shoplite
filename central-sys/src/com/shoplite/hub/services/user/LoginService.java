@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.shoplite.hub.services.BaseService;
-import com.shoplite.hub.statics.InMemoryDS;
 import com.shoplite.hub.statics.SQLUtil;
 import com.shoplite.models.Session;
 import com.shoplite.hub.statics.Util;
@@ -45,7 +44,7 @@ public class LoginService extends BaseService{
 			validateClient(request);
 			
 			String email=  gson.fromJson(user,String.class);
-			int user_id = SQLUtil.getUserId(email, conn, logger);
+			int user_id = SQLUtil.getUserId(email, conn);
 			
 			if(user_id<1)
 			{
@@ -80,10 +79,11 @@ public class LoginService extends BaseService{
 		String client = request.getHeader(client_id_header);
 		GregorianCalendar calendar = new GregorianCalendar();
 		long time = calendar.getTimeInMillis();
+		time = time+60*1000;
 		int i;
-		for(i =0;i<5;i++)
+		for(i =0;i<4;i++)
 		{
-			int key = ((int)time-(i*1000))/1000;
+			int key = ((int)time-(i*63000))/(63000);
 			String seed = Util.generateSeed((long)key,8);
 			String authKey = Util.CLIENT_ID+seed;
 			String authcode = Util.encrypt(authKey);

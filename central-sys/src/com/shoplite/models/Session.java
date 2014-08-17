@@ -30,7 +30,7 @@ public class Session {
 	public boolean isSessionVallid()
 	{
 		GregorianCalendar calendar = new GregorianCalendar();
-		if(this.timeStamp+this.timeOut >calendar.getTimeInMillis())
+		if(this.timeStamp+this.timeOut*1000 < calendar.getTimeInMillis())
 		{
 			return false;
 		}else

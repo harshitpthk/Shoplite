@@ -37,6 +37,36 @@ public class RequestFilter implements Filter{
 		HttpServletRequest httpReq = (HttpServletRequest) req;
         HttpServletResponse httpResp = (HttpServletResponse) resp;
         
+        
+        String VALID_METHODS = "DELETE, HEAD, GET, OPTIONS, POST, PUT";
+		
+        // No Origin header present means this is not a cross-domain request
+        String origin = httpReq.getHeader("Origin");
+        if ("OPTIONS".equalsIgnoreCase(httpReq.getMethod())) {
+            httpResp.setHeader("Allow", VALID_METHODS);
+            // This is a cross-domain request, add headers allowing access
+            httpResp.setHeader("Access-Control-Allow-Origin", origin);
+            httpResp.setHeader("Access-Control-Allow-Methods", VALID_METHODS);
+            httpResp.setHeader("Access-Control-Allow-Credentials", "true");
+
+            String headers = httpReq.getHeader("Access-Control-Request-Headers");
+            if (headers != null)
+                httpResp.setHeader("Access-Control-Allow-Headers", headers);
+            httpResp.setStatus(200);
+            return;
+        } 
+        
+        httpResp.setHeader("Allow", VALID_METHODS);
+        // This is a cross-domain request, add headers allowing access
+        httpResp.setHeader("Access-Control-Allow-Origin", origin);
+        httpResp.setHeader("Access-Control-Allow-Methods", VALID_METHODS);
+        httpResp.setHeader("Access-Control-Allow-Credentials", "true");
+
+        String headers = httpReq.getHeader("Access-Control-Request-Headers");
+        if (headers != null)
+            httpResp.setHeader("Access-Control-Allow-Headers", headers);
+        
+        
         String reqMethod = httpReq.getMethod();
 		int i;
 		for(i=0;i<this.METHODS.length;i++)
@@ -70,6 +100,8 @@ public class RequestFilter implements Filter{
 			return;
 		}
 		
+		
+         
 		if(chain!=null)
 		{
 			chain.doFilter(req, resp);

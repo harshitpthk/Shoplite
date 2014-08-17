@@ -33,7 +33,7 @@ public class LoginTest implements TestInterface {
 		GregorianCalendar calendar = new GregorianCalendar();
 		long time = calendar.getTimeInMillis();
 		
-		int factor = (int)time/1000;
+		int factor = (int)time/(63000);
 		
 		String seed = Util.generateSeed((long)factor,8);
 		String authKey = key+seed;

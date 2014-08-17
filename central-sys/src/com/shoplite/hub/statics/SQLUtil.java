@@ -32,7 +32,7 @@ public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs)
 		}
 	}
 
-public static boolean addUser(User user,Connection conn,Logger logger) throws Exception {
+public static boolean addUser(User user,Connection conn) throws Exception {
 	String getValueStatement ="insert into USER values(?,?,?,?,?,?,?)";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
@@ -76,7 +76,7 @@ public static boolean addUser(User user,Connection conn,Logger logger) throws Ex
 	
 }
 
-public static int getUserId(String email,Connection conn,Logger logger) throws Exception {
+public static int getUserId(String email,Connection conn) throws Exception {
 	String getValueStatement ="Select USER_ID from USER where USER_E_MAIL=?";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
@@ -100,7 +100,7 @@ public static int getUserId(String email,Connection conn,Logger logger) throws E
 }
 
 
-public static boolean updateUser(User user,Connection conn,Logger logger) throws Exception {
+public static boolean updateUser(User user,Connection conn) throws Exception {
 	String updateStatement ="UPDATE USER SET USER_NAME=?,"+ 
 												"USER_E_MAIL=?,"+ 
 												"USER_GENDER=?,"+
@@ -141,7 +141,7 @@ public static boolean updateUser(User user,Connection conn,Logger logger) throws
 	
 }
 
-public static Shop getShop(Location loc,Connection conn,Logger logger) throws Exception {
+public static Shop getShop(Location loc,Connection conn) throws Exception {
 	String getShopStatement ="Select SHOP_NAME, URL from SHOP where SHOP_LONG=? and SHOP_LAT=?";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
@@ -160,6 +160,37 @@ public static Shop getShop(Location loc,Connection conn,Logger logger) throws Ex
 			shop.setName(shopName);
 			shop.setUrl(url);
 			
+		}
+		
+		close(null, pstmt, rs);
+		return shop;
+	}catch (SQLException e) {
+		throw e;
+		
+	}finally
+	{
+		SQLUtil.close(null, pstmt, rs);
+	}
+}
+
+public static Shop getShop(int shopId,Connection conn) throws Exception {
+	String getShopStatement ="Select SHOP_NAME, URL from SHOP where SHOP_ID=?";
+	PreparedStatement pstmt=null;
+	ResultSet rs = null;
+	Shop shop=null;
+	try{
+		pstmt = conn.prepareStatement(getShopStatement);
+		pstmt.setInt(1, shopId);
+		rs = pstmt.executeQuery();
+		
+		if(rs.next())
+		{
+			String shopName = rs.getString(1);
+			String url = rs.getString(2);
+			shop = new Shop();
+			shop.setName(shopName);
+			shop.setUrl(url);
+				
 		}
 		
 		close(null, pstmt, rs);

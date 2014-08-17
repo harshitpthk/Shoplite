@@ -14,8 +14,8 @@ import com.shoplite.hub.services.user.LoginService;
 import com.shoplite.hub.services.user.RegisterUserService;
 
 
-@ApplicationPath("/service")
-public class StarApplication extends Application{
+@ApplicationPath("/service/user/")
+public class StarUserApplication extends Application{
 	
 	@Override
     public Set<Class<?>> getClasses() {

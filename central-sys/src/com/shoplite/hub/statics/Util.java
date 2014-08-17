@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.shoplite.models.Session;
-import com.shoplite.models.User;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -29,7 +28,7 @@ public  static String CLIENT_ID=null;
 public final static String session_user_header = "shoplite-user-token";
 public final static String session_shop_header = "shoplite-shop-token";
 public final static long session_user_timeout = 60*60*2;
-public final static long session_shop_timeout = 60*60*2;
+public final static long session_shop_timeout = 60*60*5;
 
 public static String generateRandomString(int length) {
 		
@@ -109,7 +108,7 @@ public static int generateRandomNumber(int length) {
 		return str;
 	}
 	
-	public static int vallidateUserSession(HttpServletRequest request, Connection conn) throws Exception
+	public static Session vallidateUserSession(HttpServletRequest request, Connection conn) throws Exception
 	{
 		HttpSession session = request.getSession(false);
 		
@@ -131,11 +130,20 @@ public static int generateRandomNumber(int length) {
 			
 			if(session_user!=null && session_user.isSessionVallid())
 			{
-				return session_user.getUserId();
+				return session_user;
+				
+			}else if(session_user ==null)
+			{
+				throw new Exception("session object missing");
+			}else
+			{
+				throw new Exception("session time out");
 			}
+			
+			
 		}
-		
 		throw new Exception("session validation failed");
+
 	}
 	
 }
