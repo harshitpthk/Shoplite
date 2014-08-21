@@ -15,10 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.shoplite.hub.services.BaseService;
 import com.shoplite.hub.statics.SQLUtil;
-import com.shoplite.hub.statics.Util;
-import com.shoplite.models.Session;
 
 
 @Path("getusersession")
@@ -40,12 +37,9 @@ Logger logger = LoggerFactory.getLogger(GetUserSession.class);
 			initDB();
 			conn = dataSource.getConnection();
 			
-			Session user_session= Util.vallidateUserSession(request,conn);
+			Object session =vallidateUserSession(request,conn);
 			
-			if(user_session.getUserId()==-1)
-				throw new Exception("User not found for session");
-			
-			return gson.toJson(user_session);
+			return gson.toJson(session);
 			
 		}catch(Exception e)
 		{

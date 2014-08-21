@@ -27,22 +27,5 @@ public class BaseService {
 		}
 		
 	}
-	
-	public boolean checkUserSession(HttpServletRequest request){
-		try {
-			HttpSession session = request.getSession(false);
-			String cookieName = request.getServletContext().getInitParameter("SessionCookie");
-			Session user_session = (Session)session.getAttribute(cookieName);
-			this.session =user_session;
-			return user_session.isSessionVallid();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-		
-		
-	}
-	
-	
 
 }

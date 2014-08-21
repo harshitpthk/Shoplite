@@ -39,7 +39,7 @@ public class RegisterUserService extends BaseService{
 			conn = dataSource.getConnection();
 			HttpSession session = request.getSession(true);
 			session.setMaxInactiveInterval(60*60);
-			logger.error(session.toString());
+			logger.error(userString);
 			String cookieName = request.getServletContext().getInitParameter("RegCookie");
 			
 			User user = gson.fromJson(userString, User.class);

@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.shoplite.models.OrderItemDetail;
-import com.shoplite.shop.services.BaseService;
 import com.shoplite.shop.services.user.PackItemsService;
 import com.shoplite.shop.statics.SQLUtil;
 import com.shoplite.shop.statics.Util;
@@ -81,7 +80,7 @@ Logger logger = LoggerFactory.getLogger(PackItemsService.class);
 		SQLUtil.close(null, pstmt, rs);
 		
 		
-		String deleteItems = "DELETE FROM ITEMSTOPACK Where ORDER_ID,ITEM_ID IN ELECT TOP ? * FROM ITEMSTOPACK";
+		String deleteItems = "DELETE FROM ITEMSTOPACK Where ORDER_ID,ITEM_ID IN SELECT TOP ? * FROM ITEMSTOPACK";
 		pstmt = conn.prepareStatement(deleteItems);
 		pstmt.setInt(1, noOfItems);
 		

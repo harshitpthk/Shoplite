@@ -5,8 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.slf4j.Logger;
-
 import com.shoplite.models.Location;
 import com.shoplite.models.Shop;
 import com.shoplite.models.User;
@@ -33,7 +31,7 @@ public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs)
 	}
 
 public static boolean addUser(User user,Connection conn) throws Exception {
-	String getValueStatement ="insert into USER values(?,?,?,?,?,?,?)";
+	String getValueStatement ="insert into USER(USER_ID,USER_NAME, USER_E_MAIL, USER_GENDER,USER_PHNO,USER_LAT,USER_LONG) values(?,?,?,?,?,?,?)";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
 	int userId;
@@ -52,8 +50,16 @@ public static boolean addUser(User user,Connection conn) throws Exception {
 		pstmt.setString(3, user.getEmail());
 		pstmt.setString(4, "");
 		pstmt.setString(5, user.getPhno());
-		pstmt.setString(6, user.getLocation().getLatitude());
-		pstmt.setString(7,  user.getLocation().getLongitude());
+		
+		if(user.getLocation()!=null)
+		{
+			pstmt.setDouble(6, user.getLocation().getLatitude());
+			pstmt.setDouble(7,  user.getLocation().getLongitude());
+		}else
+		{
+			pstmt.setDouble(6, 0);
+			pstmt.setDouble(7, 0);
+		}
 		
 		int row = pstmt.executeUpdate();
 		SQLUtil.close(null, pstmt, rs);
@@ -117,9 +123,16 @@ public static boolean updateUser(User user,Connection conn) throws Exception {
 		pstmt.setString(2, user.getEmail());
 		pstmt.setString(3, "");
 		pstmt.setString(4, user.getPhno());
-		pstmt.setString(5, user.getLocation().getLatitude());
-		pstmt.setString(6,  user.getLocation().getLongitude());
 		
+		if(user.getLocation()!=null)
+		{
+			pstmt.setDouble(5, user.getLocation().getLatitude());
+			pstmt.setDouble(6,  user.getLocation().getLongitude());
+		}else
+		{
+			pstmt.setDouble(5, 0);
+			pstmt.setDouble(6,  0);
+		}
 		int row = pstmt.executeUpdate();
 		SQLUtil.close(null, pstmt, null);
 		
@@ -142,23 +155,29 @@ public static boolean updateUser(User user,Connection conn) throws Exception {
 }
 
 public static Shop getShop(Location loc,Connection conn) throws Exception {
-	String getShopStatement ="Select SHOP_NAME, URL from SHOP where SHOP_LONG=? and SHOP_LAT=?";
+	String getShopStatement ="Select SHOP_NAME, URL, SHOP_LAT,SHOP_LONG from SHOP where SHOP_LAT>? and SHOP_LAT<? and SHOP_LONG>? and SHOP_LONG<?";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
 	Shop shop=null;
 	try{
 		pstmt = conn.prepareStatement(getShopStatement);
-		pstmt.setString(1, loc.getLongitude());
-		pstmt.setString(2, loc.getLatitude());
+		pstmt.setDouble(1, loc.getLatitude()-0.0005);
+		pstmt.setDouble(2, loc.getLatitude()+0.0005);
+		pstmt.setDouble(3, loc.getLongitude()-0.0005);
+		pstmt.setDouble(4, loc.getLongitude()+0.0005);
+		
 		rs = pstmt.executeQuery();
 		
 		if(rs.next())
 		{
 			String shopName = rs.getString(1);
 			String url = rs.getString(2);
+			
+			Location location = new Location(rs.getDouble(3),rs.getDouble(4));
 			shop = new Shop();
 			shop.setName(shopName);
 			shop.setUrl(url);
+			shop.setLocation(location);
 			
 		}
 		
@@ -174,7 +193,7 @@ public static Shop getShop(Location loc,Connection conn) throws Exception {
 }
 
 public static Shop getShop(int shopId,Connection conn) throws Exception {
-	String getShopStatement ="Select SHOP_NAME, URL from SHOP where SHOP_ID=?";
+	String getShopStatement ="Select SHOP_NAME, URL,SHOP_LAT,SHOP_LONG from SHOP where SHOP_ID=?";
 	PreparedStatement pstmt=null;
 	ResultSet rs = null;
 	Shop shop=null;
@@ -187,9 +206,12 @@ public static Shop getShop(int shopId,Connection conn) throws Exception {
 		{
 			String shopName = rs.getString(1);
 			String url = rs.getString(2);
+			Location location = new Location(rs.getDouble(3),rs.getDouble(4));
+			
 			shop = new Shop();
 			shop.setName(shopName);
 			shop.setUrl(url);
+			shop.setLocation(location);
 				
 		}
 		

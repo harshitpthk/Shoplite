@@ -33,6 +33,6 @@
 	<classpathentry kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/jersey/jaxrs-ri-2.3.1/jaxrs-ri/lib/jersey-container-servlet-core.jar"/>
 	<classpathentry kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/jersey/jaxrs-ri-2.3.1/jaxrs-ri/lib/jersey-container-servlet.jar"/>
 	<classpathentry kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/jersey/jaxrs-ri-2.3.1/jaxrs-ri/lib/jersey-server.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/google-api-java-client-1.17.0-rc/google-api-java-client/libs/gson-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/google-api-java-client-1.17.0-rc/google-api-java-client/libs/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

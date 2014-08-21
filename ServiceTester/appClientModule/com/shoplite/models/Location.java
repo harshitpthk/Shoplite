@@ -2,31 +2,31 @@ package com.shoplite.models;
 
 public class Location {
 	
-	private String longitude;
-	private String latitude;
+	private Double longitude;
+	private Double latitude;
 
-	public Location(String longitude,String latitude)
+	public Location(Double latitude,Double longitude)
 	{
 		super();
 		this.longitude = longitude;
 		this.latitude = latitude;
 	}
-	public void setLongitude (String longitude)
+	public void setLongitude (Double longitude)
 	{
 		this.longitude = longitude;
 	}
 	
-	public void setLatitude (String latitude)
+	public void setLatitude (Double latitude)
 	{
 		this.latitude = latitude;
 	}
 	
-	public String getLongitude()
+	public Double getLongitude()
 	{
 		return this.longitude;
 	}
 	
-	public String getLatitude(){
+	public Double getLatitude(){
 		return this.latitude;
 	}
 }

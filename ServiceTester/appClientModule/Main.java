@@ -33,40 +33,38 @@ public class Main {
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		TestInterface test = new GetItemTest();
-		System.out.println("Register user ");
-		test = new RegisterUserTest();
-		 
-		String obj =excutePost(test);
-		String user_id = ((RegisterUserTest)test).user_id;
-		user_id= new BASE64Encoder().encode(user_id.getBytes());
-		
-			
-		System.out.println("reg obj got back ="+obj);
-		
-		System.out.println("add user ");
 		Gson  gson = new Gson();
-		Integer regtoken =gson.fromJson(obj, Integer.class);
-		test = new AddUserTest(regtoken);
-		String client =excutePost(test);
-		String id = gson.fromJson(client, String.class);
-		System.out.println("client id got ="+client);
-		try {
-			client_id = Util.decrypt(id);
-			System.out.println("client id after decryption ="+client_id);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		TestInterface test = new GetItemTest();
+//		System.out.println("Register user ");
+//		test = new RegisterUserTest();
+//		 
+//		String obj =excutePost(test);
+//		String user_id = ((RegisterUserTest)test).user_id;
+//		user_id= new BASE64Encoder().encode(user_id.getBytes());
+//		
+//			
+//		System.out.println("reg obj got back ="+obj);
+//		
+//		System.out.println("add user ");
+//		Integer regtoken =gson.fromJson(obj, Integer.class);
+//		test = new AddUserTest(regtoken);
+//		String client =excutePost(test);
+//		String id = gson.fromJson(client, String.class);
+//		System.out.println("client id got ="+client);
+//		try {
+//			client_id = Util.decrypt(id);
+//			System.out.println("client id after decryption ="+client_id);
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		client_id="UBYr789";
 		System.out.println("login user ");
 		test = new LoginTest(client_id);
 		System.out.println(excutePost(test));
 		
-		System.out.println(((LoginTest)test).sessionID);
 		
-		String token =((LoginTest)test).sessionID;
-		test = new GetShopTest(((LoginTest)test).sessionID);
+		test = new GetShopTest();
 		String shopStr= excutePost(test);
 		System.out.println(shopStr);
 	
@@ -75,7 +73,10 @@ public class Main {
 		
 		urlAddress = "https://"+shop.getUrl()+"service/user/";
 		
-		test = new ShopLoginTest(token,session_id);
+		test = new ShopLoginTest(session_id);
+		System.out.println(excutePost(test));
+		
+		test =new GetItemTest();
 		System.out.println(excutePost(test));
 		
 	}
@@ -95,8 +96,8 @@ public class Main {
 	      //Create connection
 	      URL url = new URL(urlAddress+test.getServiceName());
 	      
-	      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy", 8080));
-	      connection = (HttpURLConnection)url.openConnection(proxy);
+	      //Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy", 8080));
+	      connection = (HttpURLConnection)url.openConnection();
 	      connection.setReadTimeout(2000*60);
 	      
 	      //System.out.println(connection.getResponseCode());
@@ -140,7 +141,7 @@ public class Main {
 	  
 
 	 		// open the new connnection again
-	 		connection = (HttpURLConnection) new URL(newUrl).openConnection(proxy);
+	 		connection = (HttpURLConnection) new URL(newUrl).openConnection();
 	 		  connection.setRequestMethod(test.getMethodType());
 		      connection.setRequestProperty("content-type","application/json; charset=utf-8");
 		     connection.setDoOutput(true); 

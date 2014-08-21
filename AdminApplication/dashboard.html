@@ -5,8 +5,13 @@
 		<script type="text/javascript" src="js/tp/jquery.js"></script>
 		<script type="text/javascript" src= "js/servercall.js" > </script>
 		<script type="text/javascript" src= "js/services.js " > </script>
+		<script type="text/javascript" src="js/items.js"></script> 
+		<script type="text/javascript" src="js/accounts.js"></script> 
 		<script type="text/javascript" src="js/dashboard.js"></script> 
 		
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/items.css" />
+		<link rel="stylesheet" href="css/accounts.css" />
 		<link rel="stylesheet" href="css/dashboard.css" />
 		
 	</head>
@@ -17,12 +22,11 @@
 			<div id="payments" onclick="showPage('paymentPage');">Payments</div>
 			<div id="packers" onclick="showPage('packersPage');">Packers</div>
 			<div id="homeDelivery" onclick="showPage('homeDeliveryPage');">HomeDelivery</div>
-			<div id="add" onclick="showPage('addPage');">Add</div>
+			<div id="admin" onclick="showPage('adminPage');">Admin</div>
 		</div>
-		
 		<div id="paymentPage" class="page inactive">
 			<div class="middlepane">
-				<div class="items">
+				<div class="screen">
 					<div class="header" > items</div>
 					<div id="paymentPage_itemsContainer" class="container" ></div>
 				
@@ -80,7 +84,7 @@
 				
 			</div>
 			<div class="middlepane">
-				<div id="items" class="items">
+				<div class="screen">
 					<div  class="header" > items</div>
 					<div id="packersPage_itemsContainer" class="container" ></div>
 				
@@ -97,21 +101,7 @@
 		
 		</div>
 		<div id="homeDeliveryPage" class="page inactive">
-			<div class="middlepane">
-				<div class="items">
-					<div class="header" > items</div>
-					<div id="homeDeliveryPage_itemsContainer" class="container" ></div>
-				
-					<script>
-						fillItems("homeDeliveryPage_itemsContainer");
-					</script>
-				</div>
 			
-				<div class="bottombar">
-				
-				</div>
-			</div>
-	
 			<div class="leftpane">
 			
 				<div class="orders">
@@ -122,11 +112,9 @@
 					</script>
 				</div>
 			</div>
-		</div>
-		<div id="addPage" class="page inactive">
+			
 			<div class="middlepane">
-				<!-- 
-<div class="items">
+				<div class="screen">
 					<div class="header" > items</div>
 					<div id="homeDeliveryPage_itemsContainer" class="container" ></div>
 				
@@ -134,14 +122,16 @@
 						fillItems("homeDeliveryPage_itemsContainer");
 					</script>
 				</div>
- -->
 			
 				<div class="bottombar">
 				
 				</div>
 			</div>
 	
-			<div class="leftpane">
+			
+		</div>
+		<div id="adminPage" class="page inactive">
+			<div id="adminPage_leftpane" class="leftpane">
 			
 				<div class="menu">
 					<div class="header" >Menu</div>
@@ -152,7 +142,20 @@
 				</div>
 
 			</div>
+			
+			<div id="adminPage_middlepane" class="middlepane">
+			
+				<div class="screen">
+					<div class="header"> Accounts</div>
+					<div id="adminPage_container" class="container"></div>
+				</div>
+				<div id="adminPage_bottombar" class="bottombar">
+				</div>
+			</div>
+	
+			
 		</div>
+		
 	</body>
 	
 </html>

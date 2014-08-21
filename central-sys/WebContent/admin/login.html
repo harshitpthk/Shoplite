@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <style>
+	 	 body,html{
+            margin: 0;
+            padding:0;
+            height: 100%;
+            width: 100%;
+        }
+        body{
+            
+            background-size: cover;
+            /* background-image:url("./img/map.jpg"); */
+        }
+            
+        #centerPart{
+            position:relative;
+            top: 18%;
+            margin : 0 auto;
+            height: 60%;
+            width: 50%;
+            -webkit-box-shadow: 0px 0px 2px 2px #444;
+            box-shadow: 0px 0px 2px 2px #444;
+            background: rgba(241,234,208,0.7);
+           
+        }
+        
+        
+        .loginBox{
+            margin: 0 auto;
+            width: 80%;
+            top:10%;
+            height:90%;
+            text-align: center;
+            position: relative;
+/*            border: 1px solid black;*/
+        }
+        
+        .heading_container{
+            margin: 0 auto;
+            position:relative;
+            display: block;
+            text-align: center;
+            height: 25%;
+            color: ;
+            font-size: 50px;
+            font-size-adjust: inherit;
+            -webkit-text-fill-color: #102B42; /* Will override color (regardless of order) */
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: white;
+            -webkit-text-size-adjust: auto;
+            
+            -webkit-transition: -webkit-transform 500ms ease-out;
+            -moz-transition: -moz-transform 500ms ease-out;
+            -o-transition: -o-transform 500ms ease-out;
+            transition: transform 500ms ease-out;
+            
+        }
+        
+        .button{
+            text-align: center;
+            position:relative;
+            margin: 0 auto;
+            margin-top: 5%;
+            width: auto;
+            height:auto;
+            min-height: 35px;
+            min-width: 100px;
+            max-height: 60px;
+            max-width: 200px;
+            display: inline-block;
+            -webkit-box-shadow: 0px 0px 1px 1px grey;
+            box-shadow: 0px 0px 1px 1px grey;
+            background-color: #00ADA9;
+            font-size: 22px;
+            color: white;
+            font-size-adjust: inherit;
+             -webkit-text-size-adjust: auto;
+        }
+        
+        .button:hover{
+            text-align: center;
+            position:relative;
+            margin: 0 auto;
+            margin-top: 5%;
+            width: auto;
+            height:auto;
+            min-height: 35px;
+            min-width: 100px;
+            max-height: 60px;
+            max-width: 200px;
+            display: inline-block;  
+            -webkit-box-shadow: 0px 0px 1px 1px grey;
+            box-shadow: 0px 0px 1px 1px grey;
+            background-color: #102B42;
+            font-size: 22px;
+            color: white;
+            font-size-adjust: inherit;
+             -webkit-text-size-adjust: auto;
+        }
+        .button:active{
+            text-align: center;
+            position:relative;
+            margin: 0 auto;
+            margin-top: 5%;
+            width: auto;
+            height:auto;
+            min-height: 35px;
+            min-width: 100px;
+            max-height: 60px;
+            max-width: 200px;
+            display: inline-block;
+            -webkit-box-shadow:inset 0px 0px 1px 1px grey;
+            box-shadow: inset 0px 0px 1px 1px grey;
+            background-color: #000729;
+            font-size: 20px;
+            color: white;
+            font-size-adjust: inherit;
+            -webkit-text-size-adjust: auto;
+        }
+        
+        
+        .input_field{
+            font-size-adjust: inherit;
+            display: block;
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 5%;
+            position: relative;
+            width: 50%;
+            height:10%;
+            border: 1px solid grey;
+            background-color: #fff; 
+             -webkit-box-shadow: 0px 0px 1px 1px #5F7A87;
+            box-shadow: 0px 0px 1px 1px #5F7A87;
+             -webkit-text-size-adjust: auto;
+        
+        }
+        
+	 </style>
+	 
+	<script type="text/javascript" src="js/tp/jquery.js"></script>	
+	<script type="text/javascript" src= "js/servercall.js" > </script>
+	<script type="text/javascript" src= "js/services.js " > </script>
+	 <script>
+	 
+	 	var success =function(msg)
+	 	{
+	 		//var data =JSON.parse(msg);
+	 		var user = "user="+JSON.stringify(msg);
+	 		window.location.href="dashboard.html?"+encodeURIComponent(user);
+	 	}
+	 	
+        function login()
+        {
+        	var id = $("#userId").val();
+        	var code = $("#userCode").val();
+        	
+        	var res = id.split("\\");
+        	
+        	if(res.length==2)
+        	{
+        		var obj = {shopId:res[0],userId:res[1],code:code};
+        		var data = JSON.stringify(obj);
+        		
+        		services_login(data,success);
+        	}
+        	
+        	
+        }
+       </script> 
+       
+</head>
+
+<body>
+
+	<div id="centerPart">
+		<div id=loginBox class=loginBox>
+		
+			<div class="heading_container">
+        		Welcome to Shoplite
+        	</div>
+			
+			<input id= "userId" class = "input_field" type="text" placeholder="Username">
+			<input id= "userCode" class = "input_field" type="password" placeholder="Password">
+			<span class = "button" onclick="login();">
+				Submit
+			</span>
+		</div>
+		
+		<div id=infoBox class=infoBox>
+		</div>
+		
+	</div>
+
+</body>
+</html>

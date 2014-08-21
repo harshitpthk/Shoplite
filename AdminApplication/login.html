@@ -165,8 +165,11 @@
         		var data = JSON.stringify(obj);
         		
         		services_login(data,success);
-        	}
+        	}else
+        	{
         	
+        		alert("user name should be in format of (domain)\\(userid)")
+        	}
         	
         }
        </script> 
@@ -183,12 +186,7 @@
         	</div>
 			
 			<input id= "userId" class = "input_field" type="text" placeholder="Username">
-
-			</input>
-		
 			<input id= "userCode" class = "input_field" type="password" placeholder="Password">
-
-			</input>
 			<span class = "button" onclick="login();">
 				Submit
 			</span>

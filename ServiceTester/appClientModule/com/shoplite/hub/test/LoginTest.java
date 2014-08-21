@@ -8,7 +8,6 @@ import com.shoplite.models.Util;
 public class LoginTest implements TestInterface {
 
 	public String key="";
-	public String sessionID="";
 	@Override
 	public String getServiceName() {
 		// TODO Auto-generated method stub
@@ -54,8 +53,7 @@ public class LoginTest implements TestInterface {
 
 	@Override
 	public void readHeaders(HttpURLConnection conn) {
-		// TODO Auto-generated method stub
-		this.sessionID =  conn.getHeaderField(Util.session_user_header);
+		
 	}
 
 	public LoginTest(String key) {

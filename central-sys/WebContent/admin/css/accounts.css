@@ -1,0 +1,9 @@
+.userBox{
+	margin: 0 auto;
+	width: 50%;
+	top:10%;
+	height:80%;
+	text-align: center;
+	position: relative;
+	display:inline-block;
+}

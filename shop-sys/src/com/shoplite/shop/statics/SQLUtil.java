@@ -4,16 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import org.slf4j.Logger;
 
 import com.shoplite.models.Item;
+import com.shoplite.models.ItemCategory;
 import com.shoplite.models.PaymentDetail;
 
 
 public class SQLUtil {
 
-public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
+	public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs) {
 		
 		if(rs != null) {
 			try {
@@ -32,35 +34,44 @@ public static void close(Connection conn, PreparedStatement pstmt, ResultSet rs)
 		}
 	}
 
-public static Item getItem(int itemId, Connection conn, Logger logger) throws SQLException {
 	
-	String getItemStatement ="Select ITEM_DESC,ITEM_PRICE,ITEM_IMG from ITEM where ITEM_ID=?";
-	PreparedStatement pstmt=null;
-	ResultSet rs = null;
-	Item item=null;
-	try{
-		pstmt = conn.prepareStatement(getItemStatement);
-		pstmt.setInt(1, itemId);
-		rs = pstmt.executeQuery();
+	public static ItemCategory getItemCategoryDetails(int itemcategoryId, Connection conn) throws SQLException {
+		
+		String getItemCategory="Select ITEM_CATEGORY_ID,ITEM_CATEGORY_NAME from ITEM_CATEGORY WHERE ITEM_CATEGORY_ID=?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(getItemCategory);
+		pstmt.setInt(1,  itemcategoryId);
+		ResultSet rs = pstmt.executeQuery();
+		ItemCategory itemCategory=null;
+		
 		if(rs.next())
 		{
-			item = new Item( rs.getString(1),rs.getDouble(2),itemId,rs.getString(3));
-			
+			itemCategory = new ItemCategory(rs.getInt(1),rs.getString(2));
 		}
 		
-		close(null, pstmt, rs);
-		return item;
+		SQLUtil.close(null, pstmt, rs);
 		
-	}catch (SQLException e) {
-		throw e;
+		return itemCategory;
+	}
+
+	public static void getItemsInItemCategory(Connection conn, ArrayList<Item> list,
+			int itemCatId) throws SQLException {
+		// TODO Auto-generated method stub
+		String getItems="Select ITEM_ID,ITEM_DESC,ITEM_PRICE,ITEM_BARCODE from ITEM WHERE ITEM_CATEGORY_ID=?";
 		
-	}finally
-	{
+		PreparedStatement pstmt = conn.prepareStatement(getItems);
+		pstmt.setInt(1,  itemCatId);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next())
+		{
+			list.add(new Item(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getInt(4)));
+		}
+		
 		SQLUtil.close(null, pstmt, rs);
 	}
-}
 
-public static int createPayment(Connection conn, 
+	public static int createPayment(Connection conn, 
 		PaymentDetail payment) throws SQLException {
 	
 		String seqSQL = "SELECT PAYMENT_SEQ.NEXTVAL FROM DUMMY";

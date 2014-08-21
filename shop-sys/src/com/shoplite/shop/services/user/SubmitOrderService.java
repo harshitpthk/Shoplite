@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.shoplite.shop.services.BaseService;
 import com.shoplite.shop.statics.Constants;
 import com.shoplite.shop.statics.SQLUtil;
 import com.shoplite.shop.statics.Util;

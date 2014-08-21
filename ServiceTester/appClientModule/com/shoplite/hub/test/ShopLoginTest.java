@@ -8,13 +8,11 @@ import com.shoplite.models.Util;
 public class ShopLoginTest implements TestInterface {
 	public String servicename="login"; 
 	public String serviceType = "POST";
-	private String sessionID="";
 	private String JSession ="";
 	
-	public ShopLoginTest(String session, String jsession)
+	public ShopLoginTest(String jsession)
 	{
-		this.sessionID= session;
-		this.JSession= jsession;
+			this.JSession= jsession;
 	}
 	
 	@Override
@@ -39,8 +37,7 @@ public class ShopLoginTest implements TestInterface {
 	@Override
 	public void writeHeaders(HttpURLConnection conn) {
 		// TODO Auto-generated method stub
-		conn.addRequestProperty(Util.session_user_header, sessionID);
-	     
+		  
 	}
 	@Override
 	public void readHeaders(HttpURLConnection conn) {

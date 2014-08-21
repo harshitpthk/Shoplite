@@ -25,12 +25,10 @@ public class RegisterUserTest implements TestInterface{
 	@Override
 	public String getPostObject() {
 		// TODO Auto-generated method stub
-		Location loc = new Location("long", "lat");
 		
 		user = new User();
 		user.setEmail("srpkrishna@gmail.com");
 		user.setPhno("9886182129");
-		user.setLocation(loc);
 		user.setName("Phani");
 		user.setDob("03/06/1987");
 		user_id = user.getEmail()+"-"+user.getPhno();

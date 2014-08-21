@@ -15,9 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.shoplite.hub.services.BaseService;
 import com.shoplite.hub.statics.SQLUtil;
-import com.shoplite.hub.statics.Util;
 import com.shoplite.models.Location;
 import com.shoplite.models.Session;
 import com.shoplite.models.Shop;
@@ -39,7 +37,7 @@ public class GetShopService extends BaseService{
 			initDB();
 			conn = dataSource.getConnection();
 			
-			Session user_session= Util.vallidateUserSession(request,conn);
+			Session user_session=vallidateUserSession(request,conn);
 			
 			if(user_session.getUserId()==-1)
 				throw new Exception("User not found for session");

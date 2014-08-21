@@ -1,0 +1,64 @@
+.userBox{
+	width: 50%;
+	top:10%;
+	height:80%;
+	text-align: center;
+	position: relative;
+	float:left;
+}
+
+.userItem
+{
+	width: 80%;
+	height: 10%;
+	margin: auto;
+	border-bottom: 2px;
+	border-bottom-color: bisque;
+	border-bottom-width: thin;
+	background-color: aliceblue;
+	border-bottom-style: solid;
+	
+}
+
+.userName
+{
+	position: relative;
+	top: 25%;
+	width: 25%;
+	height: 70%;
+	margin-left: 5%;
+	text-align: left;
+	float: left;
+}
+
+.userRole
+{
+	position: relative;	
+	top: 25%;
+	width: 25%;
+	height: 70%;
+	margin-left: 5%;
+	text-align: left;
+	float:left;
+}
+
+.userAdd
+{
+	content: url('../img/addUser.png');
+	position: relative;
+	top: 5%;
+	left: 5%;
+	float: left;
+	margin-left:5%;
+}
+
+.userDelete
+{
+	content: url('../img/deleteUser.png');
+	position: relative;
+	top: 3%;
+	left: 5%;
+	float: left;
+	margin-left:5%;
+
+}

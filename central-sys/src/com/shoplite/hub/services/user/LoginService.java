@@ -57,10 +57,7 @@ public class LoginService extends BaseService{
 			
 			
 			Session session = new Session(user_id,Util.session_user_timeout);
-			String key = Util.generateRandomString(16);
-			sessionCookie.setAttribute(cookieName, key);
-			sessionCookie.setAttribute(key, session);
-			response.setHeader(Util.session_user_header,key);
+			sessionCookie.setAttribute(cookieName, session);
 			
 			return gson.toJson("success");
 			
