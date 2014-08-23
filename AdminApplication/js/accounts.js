@@ -90,8 +90,8 @@ function buildUserListForm(users)
 		$('#listUserBox').append('<div class=userItem>'+
 									'<div class=userName>'+user.userID+'</div>'+
 									'<div class=userRole>'+user.role+'</div>'+
-									'<img class=userAdd onclick="buildUserEditForm(\''+user.userID+'\',\''+user.role+'\');"/>'+
-									'<img class=userDelete onclick="accounts_deleteUser(\''+user.userID+'\');"/>'+
+									'<img id=userEdit class=editImg onclick="buildUserEditForm(\''+user.userID+'\',\''+user.role+'\');"/>'+
+									'<img id=userDelete class=deleteImg onclick="accounts_deleteUser(\''+user.userID+'\');"/>'+
 								'</div>');
 	}
 }

@@ -97,3 +97,35 @@ border: 1px solid grey;
  */
 
 }
+
+.deleteImg
+{
+	content: url('../img/delete.png');
+	position: relative;
+	margin:2px;
+
+}
+
+.removeImg
+{
+	content: url('../img/remove.png');
+	position: relative;
+	margin:2px;
+
+}
+
+.addImg
+{
+	content: url('../img/add.png');
+	position: relative;
+	margin:2px;
+
+}
+
+.editImg
+{
+	content: url('../img/edit.png');
+	position: relative;
+	margin:2px;
+
+}

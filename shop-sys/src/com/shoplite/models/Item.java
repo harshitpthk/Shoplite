@@ -5,7 +5,7 @@ public class Item {
 	private String name;
 	private int itemCategory;
 	private double price;
-	private int barcode;
+	private int quantity;
 	
 	public int getId() {
 		return id;
@@ -31,28 +31,20 @@ public class Item {
 	public void setPrice(double price) {
 		this.price = price;
 	}
-	public int getBarcode() {
-		return barcode;
+	public int getQuantity() {
+		return quantity;
 	}
-	public void setBarcode(int barcode) {
-		this.barcode = barcode;
+	public void setQuantity(int barcode) {
+		this.quantity = barcode;
 	}
 	
-	public Item(int id, String name, double price, int barcode) {
+	public Item(int id, String name, double price, int quantity) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.price = price;
-		this.barcode = barcode;
+		this.quantity = quantity;
 	}
-	
-	public Item(int id, String name, double price) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.price = price;
-	}
-	
 	
 	
 }

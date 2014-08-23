@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.shopadmin;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +35,7 @@ public class LoginService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String user ) 
+	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String user ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -66,12 +67,17 @@ public class LoginService extends BaseService{
 				return gson.toJson(loginSucess);
 			}
 			
-			return "{\"status\": \"failure\", \"cause\": \"invalid credentials\"}";
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"invalid credentials");
+			return null;
 			
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+			return null;
 			
 		}finally
 		{

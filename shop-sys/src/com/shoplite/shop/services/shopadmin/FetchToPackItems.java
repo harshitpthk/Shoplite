@@ -1,5 +1,6 @@
 package com.shoplite.shop.services.shopadmin;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +33,7 @@ Logger logger = LoggerFactory.getLogger(PackItemsService.class);
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String fetchItems(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) 
+	public String fetchItems(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -41,7 +42,9 @@ Logger logger = LoggerFactory.getLogger(PackItemsService.class);
 			
 			if(!checkUserSession(request))
 			{
-				return Util.getInvalidSessionError();
+				
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+				return null;
 			}
 			
 			initDB();
@@ -57,7 +60,11 @@ Logger logger = LoggerFactory.getLogger(PackItemsService.class);
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return Util.getInternalError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 			
 		}finally
 		{

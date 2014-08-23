@@ -20,11 +20,9 @@ private static String Algorithm ="AES";
 private static String CharSetEncoding ="UTF-8";
 private static String SHA = "SHA-1";
 public static Key KEY_ALGO =null;
-public  static String CLIENT_ID=null; 
-//public final static String session_user_header = "shoplite-user-token";
-//public final static String session_shop_header = "shoplite-shop-token";
-public final static int session_user_timeout = 60*60*2;
-public final static int session_shop_timeout = 60*60*2;
+public  static String CLIENT_ID=null;
+public final static int session_user_timeout = 60*60*2*1000;
+public final static int session_shop_timeout = 60*60*2*1000;
 public static String starURL=null; 
 
 public static String generateRandomString(int length) {
@@ -104,19 +102,7 @@ public static int generateRandomNumber(int length) {
 		}
 		return str;
 	}
-	
-	
-	
-	public static String getInvalidSessionError()
-	{
-		return "{\"status\": \"failure\", \"cause\": \"invalid session\"}";
-	}
-	
-	public static String getInternalError()
-	{
-		return "{\"status\": \"failure\", \"cause\": \"internal error occured\"}";
-	}
-	
+
 	public static String getSuccessMessage()
 	{
 		return "{\"status\": \"success\"}";

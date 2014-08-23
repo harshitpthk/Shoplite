@@ -96,8 +96,8 @@ public class Main {
 	      //Create connection
 	      URL url = new URL(urlAddress+test.getServiceName());
 	      
-	      //Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy", 8080));
-	      connection = (HttpURLConnection)url.openConnection();
+	      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("proxy", 8080));
+	      connection = (HttpURLConnection)url.openConnection(proxy);
 	      connection.setReadTimeout(2000*60);
 	      
 	      //System.out.println(connection.getResponseCode());
@@ -141,7 +141,7 @@ public class Main {
 	  
 
 	 		// open the new connnection again
-	 		connection = (HttpURLConnection) new URL(newUrl).openConnection();
+	 		connection = (HttpURLConnection) new URL(newUrl).openConnection(proxy);
 	 		  connection.setRequestMethod(test.getMethodType());
 		      connection.setRequestProperty("content-type","application/json; charset=utf-8");
 		     connection.setDoOutput(true); 

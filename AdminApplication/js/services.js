@@ -38,5 +38,12 @@ function services_getCategories(successFunction)
 {
 	var Type = "GET";
 	var ServiceUrl ="getcategories";	
-	connectServer(Type,ServiceUrl,'',successFunction);
+	connectServer(Type,ServiceUrl,'',successFunction,true);
+}
+
+function services_getItems(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="getitems";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
 }

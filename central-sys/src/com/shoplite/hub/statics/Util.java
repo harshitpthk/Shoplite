@@ -25,10 +25,8 @@ private static String CharSetEncoding ="UTF-8";
 private static String SHA = "SHA-1";
 public static Key KEY_ALGO =null;
 public  static String CLIENT_ID=null; 
-public final static String session_user_header = "shoplite-user-token";
-public final static String session_shop_header = "shoplite-shop-token";
-public final static long session_user_timeout = 60*60*2;
-public final static long session_shop_timeout = 60*60*5;
+public final static long session_user_timeout = 60*60*2*1000;
+public final static long session_shop_timeout = 60*60*5*1000;
 
 public static String generateRandomString(int length) {
 		

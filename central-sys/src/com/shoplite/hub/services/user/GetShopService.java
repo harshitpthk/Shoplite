@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.user;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class GetShopService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getShop(@Context HttpServletRequest request,@Context HttpServletResponse response,String location ) {
+	public String getShop(@Context HttpServletRequest request,@Context HttpServletResponse response,String location ) throws IOException {
 		
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -37,10 +38,18 @@ public class GetShopService extends BaseService{
 			initDB();
 			conn = dataSource.getConnection();
 			
-			Session user_session=vallidateUserSession(request,conn);
+			try
+			{
+				Session user_session= vallidateUserSession(request,conn);
 			
-			if(user_session.getUserId()==-1)
-				throw new Exception("User not found for session");
+				if(user_session.getUserId()==-1)
+					throw new Exception("User not found for session");
+				
+			}catch(Exception e)
+			{
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+				return null;
+			}
 			
 			Location loc = gson.fromJson(location, Location.class);
 			
@@ -59,7 +68,8 @@ public class GetShopService extends BaseService{
 			for (StackTraceElement ste : e.getStackTrace()) {
 				logger.error(ste.toString());
 			}
-			return getError();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 			
 		}finally
 		{

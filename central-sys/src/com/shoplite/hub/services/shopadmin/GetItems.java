@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.shopadmin;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +32,7 @@ public class GetItems extends BaseService {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getItems(@Context HttpServletRequest request,@Context HttpServletResponse response, String input ) 
+	public String getItems(@Context HttpServletRequest request,@Context HttpServletResponse response, String input ) throws IOException 
 	{
 		
 		Gson gson = new Gson();
@@ -41,7 +42,20 @@ public class GetItems extends BaseService {
 			
 			initDB();
 			conn = dataSource.getConnection();
-//			ShopSession session =   vallidateShopSession(request,conn);
+			
+//			ShopSession session =null;
+//			
+//			try{
+//				
+//				session =  vallidateShopSession(request,conn);
+//				
+//			}catch(Exception e)
+//			{
+//				logger.error(e.getMessage());
+//				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+//				return null;
+//			}
+//			
 //			
 //			if(session.getShopUser().getRole()!=Constants.ShopUserRole.ADMIN)
 //			{
@@ -56,7 +70,11 @@ public class GetItems extends BaseService {
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 			
 		}finally
 		{

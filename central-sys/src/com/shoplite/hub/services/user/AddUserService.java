@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.user;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class AddUserService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String addUser(@Context HttpServletRequest request, @Context HttpServletResponse response,String regString)
+	public String addUser(@Context HttpServletRequest request, @Context HttpServletResponse response,String regString) throws IOException
 	{
 		
 		String user_code ="";
@@ -46,7 +47,8 @@ public class AddUserService extends BaseService{
 			
 			if(session==null)
 			{
-				throw new Exception("session not found");
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+				return null;
 			}
 			
 			RegistrationTokenizer reg =(RegistrationTokenizer) session.getAttribute(cookieName);
@@ -79,7 +81,9 @@ public class AddUserService extends BaseService{
 			for (StackTraceElement ste : e.getStackTrace()) {
 				logger.error(ste.toString());
 			}
-			return getError();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
+			
 		}finally
 		{
 			SQLUtil.close(conn, null, null);

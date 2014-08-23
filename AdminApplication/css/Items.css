@@ -71,6 +71,57 @@
 	border-style: solid;
 }
 
+.productItem
+{
+	margin: 2%;
+	padding: 1%;
+	float: left;
+	border: 4px;
+	border-color: bisque;
+	border-width: thin;
+	background-color: aliceblue;
+	border-style: solid;
+	border-radius: 15px;
+}
+
+.productIcon
+{
+	position: relative;
+	content: url('../img/product.jpg');
+	margin: 10px;
+	text-align: center;
+	
+}
+
+.productName
+{
+	position: relative;
+	margin: 4px;
+	margin-bottom:10px;
+	text-align: center;
+	
+}
+
+.productPrice
+{
+	position: relative;
+	margin: 2px;
+	text-align: center;
+}
+
+.productVariance
+{
+	position: relative;
+	margin: 2px;
+	text-align: center;
+}
+
+.productQuantity
+{
+	position: relative;
+	margin: 2px;
+	text-align: center;
+}
 
 
 

@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.shop;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ Logger logger = LoggerFactory.getLogger(GetUserSession.class);
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getSession(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) 
+	public String getSession(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -44,7 +45,12 @@ Logger logger = LoggerFactory.getLogger(GetUserSession.class);
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+			return null;
+			
 			
 		}finally
 		{

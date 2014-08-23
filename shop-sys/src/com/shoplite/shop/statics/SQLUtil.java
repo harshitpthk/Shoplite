@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.slf4j.Logger;
-
+import com.shoplite.models.Category;
 import com.shoplite.models.Item;
 import com.shoplite.models.ItemCategory;
 import com.shoplite.models.PaymentDetail;
@@ -57,7 +56,7 @@ public class SQLUtil {
 	public static void getItemsInItemCategory(Connection conn, ArrayList<Item> list,
 			int itemCatId) throws SQLException {
 		// TODO Auto-generated method stub
-		String getItems="Select ITEM_ID,ITEM_DESC,ITEM_PRICE,ITEM_BARCODE from ITEM WHERE ITEM_CATEGORY_ID=?";
+		String getItems="Select ITEM_ID,ITEM_DESC,ITEM_PRICE,ITEM_QUANTITY from ITEM WHERE ITEM_CATEGORY_ID=?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(getItems);
 		pstmt.setInt(1,  itemCatId);
@@ -71,35 +70,86 @@ public class SQLUtil {
 		SQLUtil.close(null, pstmt, rs);
 	}
 
-	public static int createPayment(Connection conn, 
-		PaymentDetail payment) throws SQLException {
-	
-		String seqSQL = "SELECT PAYMENT_SEQ.NEXTVAL FROM DUMMY";
-		PreparedStatement pstmt = conn.prepareStatement(seqSQL);
+
+	public static void getAllItems(Connection conn, ArrayList<ItemCategory> itemList,
+			int categoryId, int shopID) throws SQLException 
+	{
+		
+		String getItems="Select ITEM_CATEGORY_ID,ITEM_CATEGORY_NAME from ITEM_CATEGORY WHERE CATEGORY_ID=?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(getItems);
+		pstmt.setInt(1,  categoryId);
 		ResultSet rs = pstmt.executeQuery();
-		rs.next();
-		int paymentID = rs.getInt(1);
+		
+		while(rs.next())
+		{
+			itemList.add(new ItemCategory(rs.getInt(1),rs.getString(2)));
+		}
+		
 		SQLUtil.close(null, pstmt, rs);
 		
-	
-		
-		String insert = "INSERT INTO ORDERS(PAYMENT_ID,PAYMENT_AMOUNT,PAYMENT_DATE,MODE,REFNO) VALUES(?,?,?)";
-		
-		pstmt = conn.prepareStatement(insert);
-		pstmt.setInt(1, paymentID);
-		pstmt.setDouble(2, payment.getAmount());
-		pstmt.setString(3, "CURRENTTIMESTAMP");
-		pstmt.setInt(1, payment.getMode().ordinal());
-		pstmt.setInt(1, payment.getReferenceNumber());
-		
-		pstmt.executeUpdate();
-		
-		SQLUtil.close(null, pstmt, null);
-		
-		return paymentID;
+		for (ItemCategory itemCategory:itemList)
+		{
+			ArrayList<Item> list = new ArrayList<Item>();
+			getItemsInItemCategory(conn,list,itemCategory.getId());
+			
+			itemCategory.setItemList(list);
+		}
 		
 	}
-
-
+	
+	public static int createPayment(Connection conn, 
+			PaymentDetail payment) throws SQLException {
+		
+			String seqSQL = "SELECT PAYMENT_SEQ.NEXTVAL FROM DUMMY";
+			PreparedStatement pstmt = conn.prepareStatement(seqSQL);
+			ResultSet rs = pstmt.executeQuery();
+			rs.next();
+			int paymentID = rs.getInt(1);
+			SQLUtil.close(null, pstmt, rs);
+			
+		
+			
+			String insert = "INSERT INTO ORDERS(PAYMENT_ID,PAYMENT_AMOUNT,PAYMENT_DATE,MODE,REFNO) VALUES(?,?,?)";
+			
+			pstmt = conn.prepareStatement(insert);
+			pstmt.setInt(1, paymentID);
+			pstmt.setDouble(2, payment.getAmount());
+			pstmt.setString(3, "CURRENTTIMESTAMP");
+			pstmt.setInt(1, payment.getMode().ordinal());
+			pstmt.setInt(1, payment.getReferenceNumber());
+			
+			pstmt.executeUpdate();
+			
+			SQLUtil.close(null, pstmt, null);
+			
+			return paymentID;
+			
+		}
+	
+	public static void getAllCategories(Connection conn,
+			ArrayList<Category> categoriesList, int level) throws SQLException {
+		
+		String getCategories ="Select CATEGORY_ID,CATEGORY_NAME from CATEGORY WHERE PARENT_CAT_ID=?";
+		
+		PreparedStatement pstmt = conn.prepareStatement(getCategories);
+		pstmt.setInt(1,  level);
+		ResultSet rs = pstmt.executeQuery();
+		
+		while(rs.next())
+		{
+			categoriesList.add(new Category(rs.getInt(1),rs.getString(2)));
+		}
+		
+		SQLUtil.close(null, pstmt, rs);
+		
+		for (Category category:categoriesList)
+		{
+			ArrayList<Category> list = new ArrayList<Category>();
+			getAllCategories(conn,list,category.getId());
+			
+			category.setChildList(list);
+		}
+	}
 
 }

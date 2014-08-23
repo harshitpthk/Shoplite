@@ -157,6 +157,8 @@ $(document).ready(
 			var user = result["user"];
 			var userObj = JSON.parse(user);
 		
+			var shopUrl = userObj.shop.url;
+			SHOPURL = "https://"+shopUrl;
 			if(userObj.role==="ADMIN")
 			{
 				//alert("hi");

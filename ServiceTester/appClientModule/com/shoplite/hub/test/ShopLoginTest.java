@@ -29,8 +29,7 @@ public class ShopLoginTest implements TestInterface {
 	public String getPostObject() {
 		// TODO Auto-generated method stub
 		Gson gson = new Gson();
-		String str =JSession.substring(JSession.indexOf("=")+1,JSession.length());
-		return gson.toJson(str);
+		return gson.toJson(JSession);
 		
 		
 	}

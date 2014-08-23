@@ -2,6 +2,7 @@ package com.shoplite.shop.services.user;
 
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -33,7 +34,7 @@ public class LoginService {
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) 
+	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
 	{
 		
 		Gson gson = new Gson();
@@ -43,8 +44,9 @@ public class LoginService {
 			String JSessionID=  gson.fromJson(input,String.class);
 			String session_str = validateClient(JSessionID);
 			
-			if(Util.getInvalidSessionError().equalsIgnoreCase(session_str))
+			if(session_str==null)
 				throw new Exception("Session validation from central system failed");
+			
 			Session sessionCookie = gson.fromJson(session_str, Session.class);
 			
 			if(sessionCookie!=null && sessionCookie.isSessionVallid())
@@ -70,7 +72,8 @@ public class LoginService {
 			for (StackTraceElement ste : e.getStackTrace()) {
 				logger.error(ste.toString());
 			}
-			return Util.getInvalidSessionError();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 		}
 		
 	}
@@ -120,7 +123,7 @@ public class LoginService {
 			      connection.setRequestProperty("content-type","application/json; charset=utf-8");
 			     connection.setDoOutput(true); 
 			     connection.setRequestProperty(HEADER_KEY, HEADER_VALUE);
-			     connection.setRequestProperty("Cookie", "JSESSIONID="+jSessionID);
+			     connection.setRequestProperty("Cookie", jSessionID);
 				    
 		  
 		 	}

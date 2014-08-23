@@ -47,10 +47,9 @@ public class GetItemTest implements TestInterface {
 	public String getPostObject() {
 		// TODO Auto-generated method stub
 		Gson gson = new Gson();
-		Input input =new Input("itemid",10000);
+		Input input =new Input("itemcategoryid",10000);
 		
-		gson.toJson(input);
-		return gson.toString();
+		return gson.toJson(input);
 	}
 	@Override
 	public void writeHeaders(HttpURLConnection conn) {

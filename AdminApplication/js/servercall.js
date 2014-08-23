@@ -2,6 +2,8 @@ var server={requestURL:"", reqType:"",reqdata:"",callBackSuccess:""};
 var token;
 var cookie;
 var BASEURL= "https://starp1940130226trial.hanatrial.ondemand.com/central-sys/service/shopadmin/"
+var SHOPURL = ""
+
 var servercall_success =function(data,textStaus,jqXHR)
 {
 	try{
@@ -30,12 +32,17 @@ var servercall_error=function(jqXHR, textStatus, errorThrown)
 		alert(jqXHR.status + ' ' + textStatus + ' - ' + errorThrown);
 }
 
-function connectServer(reqType,reqURL,reqdata,successFunction)
+function connectServer(reqType,reqURL,reqdata,successFunction,isShop)
 {
 	try
 	{
 		var Type = reqType;
 		var ServiceUrl = BASEURL+reqURL;
+		
+		if(isShop)
+		{
+			ServiceUrl = SHOPURL+reqURL;
+		}
 		var varData = reqdata;
 		var ContentType = "application/json; charset=utf-8";
 		var DataType = "json"; 

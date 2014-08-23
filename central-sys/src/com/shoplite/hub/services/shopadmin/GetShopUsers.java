@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.shopadmin;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +30,7 @@ public class GetShopUsers extends BaseService{
 	
 	@GET
 	@Consumes({ MediaType.APPLICATION_JSON})
-	public String getShopUsers(@Context HttpServletRequest request, @Context HttpServletResponse response) 
+	public String getShopUsers(@Context HttpServletRequest request, @Context HttpServletResponse response) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -38,8 +39,20 @@ public class GetShopUsers extends BaseService{
 			
 			initDB();
 			conn = dataSource.getConnection();
-//			ShopSession session =   vallidateShopSession(request,conn);
+			
+//			ShopSession session =null;
 //			
+//			try{
+//				
+//				session =  vallidateShopSession(request,conn);
+//				
+//			}catch(Exception e)
+//			{
+//				logger.error(e.getMessage());
+//				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+//				return null;
+//			}
+//					
 //			if(session.getShopUser().getRole()!=Constants.ShopUserRole.ADMIN)
 //			{
 //				throw new Exception("Cannot add an user. Please contact your administrator");
@@ -55,7 +68,11 @@ public class GetShopUsers extends BaseService{
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 			
 		}finally
 		{

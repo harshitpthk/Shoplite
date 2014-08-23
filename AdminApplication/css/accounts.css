@@ -10,7 +10,7 @@
 .userItem
 {
 	width: 80%;
-	height: 10%;
+	height: 12%;
 	margin: auto;
 	border-bottom: 2px;
 	border-bottom-color: bisque;
@@ -52,13 +52,16 @@
 	margin-left:5%;
 }
 
-.userDelete
+#userEdit
 {
-	content: url('../img/deleteUser.png');
-	position: relative;
-	top: 3%;
 	left: 5%;
 	float: left;
 	margin-left:5%;
+}
 
+#userDelete
+{
+	left: 5%;
+	float: left;
+	margin-left:5%;
 }

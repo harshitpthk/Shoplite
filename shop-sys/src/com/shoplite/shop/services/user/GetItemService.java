@@ -1,5 +1,6 @@
 package com.shoplite.shop.services.user;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +23,6 @@ import com.google.gson.Gson;
 import com.shoplite.models.Item;
 import com.shoplite.models.ItemCategory;
 import com.shoplite.shop.statics.SQLUtil;
-import com.shoplite.shop.statics.Util;
 
 @Path("getitem")
 public class GetItemService extends BaseService{
@@ -32,7 +32,7 @@ public class GetItemService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getItem(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) 
+	public String getItem(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
 	{
 	
 		Gson gson = new Gson();
@@ -42,7 +42,8 @@ public class GetItemService extends BaseService{
 			
 			if(!checkUserSession(request))
 			{
-				return Util.getInvalidSessionError();
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+				return null;
 			}
 			
 			initDB();
@@ -52,14 +53,15 @@ public class GetItemService extends BaseService{
 			
 			ItemCategory itemCategory=null;
 			
-			if(inputObject.type.equalsIgnoreCase("itemCategoryid"))
+			if(inputObject.type.equalsIgnoreCase("itemcategoryid"))
 			{
 				itemCategory = SQLUtil.getItemCategoryDetails(inputObject.id, conn);
 	
 				ArrayList<Item> list = new ArrayList<Item>();
 				SQLUtil.getItemsInItemCategory(conn, list, itemCategory.getId());
 				itemCategory.setItemList(list);	
-			}else
+				
+			}else if(inputObject.type.equalsIgnoreCase("itemid"))
 			{	
 				itemCategory= getItem(inputObject.id,conn);
 			}
@@ -69,7 +71,11 @@ public class GetItemService extends BaseService{
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return Util.getInternalError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 			
 		}finally
 		{
@@ -80,28 +86,35 @@ public class GetItemService extends BaseService{
 
 	private ItemCategory getItem(int itemId, Connection conn) throws SQLException {
 		
-		String getItem="Select ITEM_ID,ITEM_DESC,ITEM_PRICE,ITEM_CATEGORY_ID from ITEM WHERE ITEM_ID=?";
+		String getItem="Select ITEM_ID,ITEM_DESC,ITEM_PRICE,ITEM_CATEGORY_ID,ITEM_QUANTITY from ITEM WHERE ITEM_ID=?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(getItem);
 		pstmt.setInt(1,  itemId);
 		ResultSet rs = pstmt.executeQuery();
 		Item item=null;
+		int item_Cat_id=-1;
 		
 		if(rs.next())
 		{
-			item = new Item(rs.getInt(1),rs.getString(2),rs.getDouble(3));
+			item = new Item(rs.getInt(1),rs.getString(2),rs.getDouble(3),rs.getInt(4));
+			item_Cat_id = rs.getInt(4);
 		}
 		
 		SQLUtil.close(null, pstmt, rs);
 		
-		ItemCategory itemCategory= SQLUtil.getItemCategoryDetails(rs.getInt(4), conn);
+		if(item_Cat_id>999)
+		{
+			ItemCategory itemCategory= SQLUtil.getItemCategoryDetails(item_Cat_id, conn);
+			
+			ArrayList<Item> list =new ArrayList<Item>();
+			list.add(item);
+			
+			itemCategory.setItemList(list);
+			return itemCategory;
+			
+		}
 		
-		ArrayList<Item> list =new ArrayList<Item>();
-		list.add(item);
-		
-		itemCategory.setItemList(list);
-		
-		return itemCategory;
+		return null;
 	}
 	
 }

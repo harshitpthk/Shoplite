@@ -2,6 +2,7 @@ package com.shoplite.hub.test;
 
 import java.net.HttpURLConnection;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import com.shoplite.models.Util;
 
@@ -30,6 +31,7 @@ public class LoginTest implements TestInterface {
 	public void writeHeaders(HttpURLConnection conn) {
 		// TODO Auto-generated method stub
 		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		long time = calendar.getTimeInMillis();
 		
 		int factor = (int)time/(63000);
