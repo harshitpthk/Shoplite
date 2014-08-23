@@ -1,6 +1,10 @@
 package com.shoplite.hub.services.user;
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.shoplite.hub.services.BaseService;
 import com.shoplite.hub.statics.SQLUtil;
-import com.shoplite.hub.statics.Util;
 import com.shoplite.models.Location;
 import com.shoplite.models.Session;
 import com.shoplite.models.Shop;
@@ -31,7 +33,7 @@ public class GetShopListService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getShopList(@Context HttpServletRequest request,@Context HttpServletResponse response,String location ) {
+	public String getShopList(@Context HttpServletRequest request,@Context HttpServletResponse response,String location ) throws IOException {
 
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -40,28 +42,37 @@ public class GetShopListService extends BaseService{
 			
 			initDB();
 			conn = dataSource.getConnection();
-			Session user_session= Util.vallidateUserSession(request,conn);
 			
-			if(user_session.getUserId()==-1)
-				throw new Exception("User not found for session");
+			try
+			{
+				Session user_session= vallidateUserSession(request,conn);
+			
+				if(user_session.getUserId()==-1)
+					throw new Exception("User not found for session");
+				
+			}catch(Exception e)
+			{
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+				return null;
+			}
 			
 			
 			Location loc = gson.fromJson(location, Location.class);
 			
-			ArrayList<Shop> shopList = getShopFromLocation(loc);
 			
-			if(shopList==null)
-			{
-				throw new Exception("Shop not found");
-			}
-			
+			ArrayList<Shop> shopList =new ArrayList<Shop>();
+			getShopFromLocation(conn,loc,shopList);
 			
 			return gson.toJson(shopList);
 			
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 			
 		}finally
 		{
@@ -70,14 +81,35 @@ public class GetShopListService extends BaseService{
 	
 	}
 	
-	public ArrayList<Shop> getShopFromLocation(Location loc)
+	public void getShopFromLocation(Connection conn,Location loc,ArrayList<Shop> list) throws SQLException
 	{
-		Shop shop =new Shop();
-		shop.setName("Shop");
-		shop.setId("1234");
-		shop.setUrl("http://localhost:8080/central-sys/HelloWorldServlet");
-		ArrayList<Shop> array = new ArrayList<Shop>(); 
-		array.add(shop);
-		return array;
+		
+		String getShopStatement ="Select SHOP_NAME, URL,SHOP_LAT,SHOP_LONG from SHOP where SHOP_LAT>? and SHOP_LAT<? and SHOP_LONG>? and SHOP_LONG<?";
+		PreparedStatement pstmt = conn.prepareStatement(getShopStatement);
+		pstmt.setDouble(1, loc.getLatitude()-0.018);
+		pstmt.setDouble(2, loc.getLatitude()+0.018);
+		pstmt.setDouble(3, loc.getLongitude()-0.018);
+		pstmt.setDouble(4, loc.getLongitude()+0.018);
+				
+		ResultSet rs = pstmt.executeQuery();
+				
+		while(rs.next())
+		{
+			String shopName = rs.getString(1);
+			String url = rs.getString(2);
+			Location location = new Location(rs.getDouble(3),rs.getDouble(4));
+			
+			Shop shop = new Shop();
+			shop.setName(shopName);
+			shop.setUrl(url);
+			shop.setLocation(location);
+			
+			list.add(shop);
+			
+		}
+				
+	    SQLUtil.close(null, pstmt, rs);
+				
+		
 	}
 }

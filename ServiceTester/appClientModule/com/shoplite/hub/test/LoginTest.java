@@ -2,13 +2,13 @@ package com.shoplite.hub.test;
 
 import java.net.HttpURLConnection;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import com.shoplite.models.Util;
 
 public class LoginTest implements TestInterface {
 
 	public String key="";
-	public String sessionID="";
 	@Override
 	public String getServiceName() {
 		// TODO Auto-generated method stub
@@ -31,6 +31,7 @@ public class LoginTest implements TestInterface {
 	public void writeHeaders(HttpURLConnection conn) {
 		// TODO Auto-generated method stub
 		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		long time = calendar.getTimeInMillis();
 		
 		int factor = (int)time/(63000);
@@ -54,8 +55,7 @@ public class LoginTest implements TestInterface {
 
 	@Override
 	public void readHeaders(HttpURLConnection conn) {
-		// TODO Auto-generated method stub
-		this.sessionID =  conn.getHeaderField(Util.session_user_header);
+		
 	}
 
 	public LoginTest(String key) {

@@ -4,7 +4,14 @@ public class Shop {
 	private String name;
 	private String id;
 	private String url;
+	private Location location;
 	
+	public Location getLocation() {
+		return location;
+	}
+	public void setLocation(Location location) {
+		this.location = location;
+	}
 	public String getName() {
 		return name;
 	}

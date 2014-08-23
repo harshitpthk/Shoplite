@@ -4,11 +4,34 @@ import java.net.HttpURLConnection;
 
 import com.google.gson.Gson;
 
+class Input
+{
+	String type;
+	int id;
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public Input(String type, int id) {
+		super();
+		this.type = type;
+		this.id = id;
+	}
+	
+}
 
 public class GetItemTest implements TestInterface {
 
 	public String servicename="getitem"; 
-	public String serviceType = "GET";
+	public String serviceType = "POST";
 	
 	@Override
 	public String getServiceName() {
@@ -24,8 +47,9 @@ public class GetItemTest implements TestInterface {
 	public String getPostObject() {
 		// TODO Auto-generated method stub
 		Gson gson = new Gson();
-		gson.toJson("");
-		return gson.toString();
+		Input input =new Input("itemcategoryid",10000);
+		
+		return gson.toJson(input);
 	}
 	@Override
 	public void writeHeaders(HttpURLConnection conn) {
@@ -38,3 +62,5 @@ public class GetItemTest implements TestInterface {
 		
 	}
 }
+
+

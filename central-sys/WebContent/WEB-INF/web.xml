@@ -101,11 +101,16 @@
 </filter>
 <filter-mapping>
   <filter-name>RequestFilter</filter-name>
-  <url-pattern>/*</url-pattern>
+  <url-pattern>/service/*</url-pattern>
 </filter-mapping>
 <resource-ref>
     <res-ref-name>jdbc/DefaultDB</res-ref-name>
     <res-type>javax.sql.DataSource</res-type>
-</resource-ref>    
- 
+</resource-ref> 
+
+<session-config>
+    <session-timeout>240</session-timeout>
+
+</session-config>
+
 </web-app>

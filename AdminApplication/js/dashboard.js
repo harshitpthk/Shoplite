@@ -1,5 +1,6 @@
-var pages=['paymentPage','packersPage','homeDeliveryPage','addPage'];
-var add_menu_items=['User','Items','Income','Accounts','Alerts','Settings'];
+var pages=['paymentPage','packersPage','homeDeliveryPage','adminPage'];
+var admin_menu_items=['Items','Income','Accounts','Alerts','Settings'];
+var admin_current_screen=-1;
 
 function fillItems(divID)
 {
@@ -38,10 +39,10 @@ function fillOrders(divID)
 function fillMenu(divID)
 {
 	var id = "#"+divID;
-	for(var i=0;i<add_menu_items.length;i++)
+	for(var i=0;i<admin_menu_items.length;i++)
 	{
-		$(id).append('<div id= "add_menu_item'+i+'" class ="menu_item" onclick="showscreen(\''+i+'\');" >'+
-								'<div id="menu_item_title" class="menu_title">'+add_menu_items[i]+'</div>'+
+		$(id).append('<div id= "admin_menu_item'+i+'" class ="menu_item" onclick="showscreen(\''+i+'\');" >'+
+								'<div id="menu_item_title" class="menu_title">'+admin_menu_items[i]+'</div>'+
 							'<div class="DivHelper"></div>'+'</div>'
 							);
 	}
@@ -70,6 +71,78 @@ function getQueryParam(query) {
   return result;
 }
 
+function loadScreen(key)
+{
+	switch (key)
+	{
+		case "Items":
+  		loadItems();
+  		break;
+  		
+		// case "Income":
+//   		loadIncome(a);
+//   		break;
+  		
+  		case "Accounts":
+  		loadAccounts();
+  		break;
+  		
+  		// case "Alerts":
+//   		loadAlerts();
+//   		break;
+//   		
+//   		case "Settings":
+//   		loadSettings();
+//   		break;
+  
+	}
+}
+
+function unLoadScreen(key)
+{
+	switch (key)
+	{
+		case "Items":
+  		clearItems();
+  		break;
+  		
+		// case "Income":
+//   		clearIncome();
+//   		break;
+  		
+  		case "Accounts":
+  		clearAccounts();
+  		break;
+  		
+  		// case "Alerts":
+//   		clearAlerts();
+//   		break;
+//   		
+//   		case "Settings":
+//   		clearSettings();
+//   		break;
+  
+	}
+}
+
+
+function showscreen(index)
+{
+	if(admin_current_screen!=-1)
+	{
+		unLoadScreen(admin_menu_items[admin_current_screen]);
+	}
+	
+	for(var i=0;i<admin_menu_items.length;i++)
+	{
+		
+		if(i==index)
+		{
+			loadScreen(admin_menu_items[i]);
+			admin_current_screen=i;
+		}
+	}	
+}
 
 
 $(document).ready(
@@ -84,9 +157,11 @@ $(document).ready(
 			var user = result["user"];
 			var userObj = JSON.parse(user);
 		
-			if(userObj.role==0)
+			var shopUrl = userObj.shop.url;
+			SHOPURL = "https://"+shopUrl;
+			if(userObj.role==="ADMIN")
 			{
-				alert("hi");
+				//alert("hi");
 			}else 
 			{
 			

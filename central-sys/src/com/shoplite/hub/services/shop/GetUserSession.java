@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.shop;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.shoplite.hub.services.BaseService;
 import com.shoplite.hub.statics.SQLUtil;
-import com.shoplite.hub.statics.Util;
-import com.shoplite.models.Session;
 
 
 @Path("getusersession")
@@ -30,7 +28,7 @@ Logger logger = LoggerFactory.getLogger(GetUserSession.class);
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getSession(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) 
+	public String getSession(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -40,17 +38,19 @@ Logger logger = LoggerFactory.getLogger(GetUserSession.class);
 			initDB();
 			conn = dataSource.getConnection();
 			
-			Session user_session= Util.vallidateUserSession(request,conn);
+			Object session =vallidateUserSession(request,conn);
 			
-			if(user_session.getUserId()==-1)
-				throw new Exception("User not found for session");
-			
-			return gson.toJson(user_session);
+			return gson.toJson(session);
 			
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+			return null;
+			
 			
 		}finally
 		{

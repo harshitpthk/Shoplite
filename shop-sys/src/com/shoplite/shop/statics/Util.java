@@ -2,16 +2,12 @@ package com.shoplite.shop.statics;
 
 import java.security.Key;
 import java.security.MessageDigest;
-import java.sql.Connection;
 import java.util.Arrays;
 import java.util.Random;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
 
-import com.shoplite.models.Session;
-import com.shoplite.models.User;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -24,11 +20,9 @@ private static String Algorithm ="AES";
 private static String CharSetEncoding ="UTF-8";
 private static String SHA = "SHA-1";
 public static Key KEY_ALGO =null;
-public  static String CLIENT_ID=null; 
-public final static String session_user_header = "shoplite-user-token";
-public final static String session_shop_header = "shoplite-shop-token";
-public final static long session_user_timeout = 60*60*2;
-public final static long session_shop_timeout = 60*60*2;
+public  static String CLIENT_ID=null;
+public final static int session_user_timeout = 60*60*2*1000;
+public final static int session_shop_timeout = 60*60*2*1000;
 public static String starURL=null; 
 
 public static String generateRandomString(int length) {
@@ -108,34 +102,7 @@ public static int generateRandomNumber(int length) {
 		}
 		return str;
 	}
-	
-	public static int vallidateUserSession(HttpServletRequest request, Connection conn)
-	{
-		String sessionKey = request.getHeader(Util.session_user_header);
-		
-		if(sessionKey!=null)
-		{
-			Session session = InMemoryDS.getCurrentsessions().getItem(sessionKey,conn,Session.class);
-			
-			if(session!=null && session.isSessionVallid())
-			{
-				return session.getUserId();
-			}
-		}
-		
-		return -1;
-	}
-	
-	public static String getInvalidSessionError()
-	{
-		return "{\"status\": \"failure\", \"cause\": \"invalid session\"}";
-	}
-	
-	public static String getInternalError()
-	{
-		return "{\"status\": \"failure\", \"cause\": \"internal error occured\"}";
-	}
-	
+
 	public static String getSuccessMessage()
 	{
 		return "{\"status\": \"success\"}";

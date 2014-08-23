@@ -1,0 +1,128 @@
+
+.categoryBox
+{
+	position:relative;
+	width: 20%;
+	height: 100%;
+	float:left;
+}
+
+.categoryItem
+{
+	width: 100%;
+	height: 10%;
+	margin: auto;
+	border-bottom: 2px;
+	border-bottom-color: bisque;
+	border-bottom-width: thin;
+	background-color: aliceblue;
+	border-bottom-style: solid;
+}
+
+.categoryName
+{
+	position: relative;
+	top: 25%;
+	width: 100%;
+	height: 70%;
+	margin-left: 5%;
+	text-align: left;
+	float:left;
+}
+
+.categoryPathBar
+{
+	position: relative;
+	width: 80%;
+	height: 10%;
+	float: left;
+}
+
+.subCategoryBox
+{
+	position: relative;
+	width: 80%;
+	height: 100%;
+	float: left;
+}
+
+.subCategoryItem
+{
+	margin: 2%;
+	padding: 1%;
+	float: left;
+	border: 2px;
+	border: 4px;
+	border-color: bisque;
+	border-width: thin;
+	background-color: aliceblue;
+	border-style: solid;
+	border-radius: 15px;
+}
+
+.pathBarCategoryItem
+{
+	padding: 1%;
+	float: left;
+	border: 4px;
+	border-color: bisque;
+	border-width: thin;
+	background-color: aliceblue;
+	border-style: solid;
+}
+
+.productItem
+{
+	margin: 2%;
+	padding: 1%;
+	float: left;
+	border: 4px;
+	border-color: bisque;
+	border-width: thin;
+	background-color: aliceblue;
+	border-style: solid;
+	border-radius: 15px;
+}
+
+.productIcon
+{
+	position: relative;
+	content: url('../img/product.jpg');
+	margin: 10px;
+	text-align: center;
+	
+}
+
+.productName
+{
+	position: relative;
+	margin: 4px;
+	margin-bottom:10px;
+	text-align: center;
+	
+}
+
+.productPrice
+{
+	position: relative;
+	margin: 2px;
+	text-align: center;
+}
+
+.productVariance
+{
+	position: relative;
+	margin: 2px;
+	text-align: center;
+}
+
+.productQuantity
+{
+	position: relative;
+	margin: 2px;
+	text-align: center;
+}
+
+
+
+

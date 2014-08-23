@@ -25,14 +25,12 @@ public class RegisterUserTest implements TestInterface{
 	@Override
 	public String getPostObject() {
 		// TODO Auto-generated method stub
-		Location loc = new Location("long", "lat");
 		
 		user = new User();
-		user.setEmail("harsht91@gmail.com");
-		user.setPhno("7259310712");
-		user.setLocation(loc);
-		user.setName("harshit");
-		user.setDob("07/01/1991");
+		user.setEmail("srpkrishna@gmail.com");
+		user.setPhno("9886182129");
+		user.setName("Phani");
+		user.setDob("03/06/1987");
 		user_id = user.getEmail()+"-"+user.getPhno();
 		Gson gson = new Gson();
 		return gson.toJson(user);

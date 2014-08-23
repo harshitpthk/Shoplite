@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.shopadmin;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,12 +20,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.shoplite.hub.services.BaseService;
 import com.shoplite.hub.statics.Constants;
 import com.shoplite.hub.statics.SQLUtil;
 import com.shoplite.hub.statics.Util;
 import com.shoplite.models.Shop;
 import com.shoplite.models.ShopSession;
+import com.shoplite.models.ShopUser;
 
 @Path("login")
 public class LoginService extends BaseService{
@@ -34,7 +35,7 @@ public class LoginService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String user ) 
+	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String user ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -55,25 +56,28 @@ public class LoginService extends BaseService{
 				sessionCookie.setMaxInactiveInterval((int)Util.session_shop_timeout);
 				String cookieName = request.getServletContext().getInitParameter("SessionCookie");
 				
+				ShopUser shopUser = new ShopUser(loginDetails.userId,loginDetails.shopId,role);
 				
-				ShopSession session = new ShopSession(loginDetails.userId,loginDetails.shopId,role,shop.getUrl(),(int)Util.session_shop_timeout);
-				String key = Util.generateRandomString(16);
-				sessionCookie.setAttribute(cookieName, key);
-				sessionCookie.setAttribute(key, session);
-				response.setHeader(Util.session_user_header,key);
+				ShopSession session = new ShopSession(shopUser,shop.getUrl(),(int)Util.session_shop_timeout);
+				sessionCookie.setAttribute(cookieName, session);
 				
 				LoginSucess  loginSucess = new LoginSucess();
-				loginSucess.setRole(role);
+				loginSucess.setRole(shopUser.getRole());
 				loginSucess.setShop(shop);
 				return gson.toJson(loginSucess);
 			}
 			
-			return "{\"status\": \"failure\", \"cause\": \"invalid credentials\"}";
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"invalid credentials");
+			return null;
 			
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+			return null;
 			
 		}finally
 		{
@@ -112,12 +116,13 @@ class LoginDetails
 
 class LoginSucess
 {
-	int role;
+	Constants.ShopUserRole role;
 	Shop shop;
-	public int getRole() {
+	
+	public Constants.ShopUserRole getRole() {
 		return role;
 	}
-	public void setRole(int role) {
+	public void setRole(Constants.ShopUserRole role) {
 		this.role = role;
 	}
 	public Shop getShop() {

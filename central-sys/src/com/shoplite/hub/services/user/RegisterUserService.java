@@ -1,5 +1,6 @@
 package com.shoplite.hub.services.user;
 
+import java.io.IOException;
 import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +30,7 @@ public class RegisterUserService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String registerUser(@Context HttpServletRequest request, @Context HttpServletResponse response,String userString)
+	public String registerUser(@Context HttpServletRequest request, @Context HttpServletResponse response,String userString) throws IOException
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -39,7 +40,7 @@ public class RegisterUserService extends BaseService{
 			conn = dataSource.getConnection();
 			HttpSession session = request.getSession(true);
 			session.setMaxInactiveInterval(60*60);
-			logger.error(session.toString());
+			logger.error(userString);
 			String cookieName = request.getServletContext().getInitParameter("RegCookie");
 			
 			User user = gson.fromJson(userString, User.class);
@@ -73,7 +74,9 @@ public class RegisterUserService extends BaseService{
 			for (StackTraceElement ste : e.getStackTrace()) {
 				logger.error(ste.toString());
 			}
-			return getError();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
+			
 		}finally
 		{
 			SQLUtil.close(conn, null, null);

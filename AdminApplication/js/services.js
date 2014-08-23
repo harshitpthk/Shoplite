@@ -5,9 +5,45 @@ function services_login(varData,successFunction)
 	connectServer(Type,ServiceUrl,varData,successFunction);
 }
 
-function fetch_accounts(successFunction)
+function services_addShopUser(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="addshopuser";	
+	connectServer(Type,ServiceUrl,varData,successFunction);
+}
+
+function services_editShopUser(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="editshopuser";	
+	connectServer(Type,ServiceUrl,varData,successFunction);
+}
+
+function services_deleteShopUser(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="deleteshopuser";	
+	connectServer(Type,ServiceUrl,varData,successFunction);
+}
+
+
+function services_getShopUsers(successFunction)
 {
 	var Type = "GET";
-	var ServiceUrl ="service/accounts";	
+	var ServiceUrl ="getshopusers";	
 	connectServer(Type,ServiceUrl,'',successFunction);
+}
+
+function services_getCategories(successFunction)
+{
+	var Type = "GET";
+	var ServiceUrl ="getcategories";	
+	connectServer(Type,ServiceUrl,'',successFunction,true);
+}
+
+function services_getItems(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="getitems";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
 }

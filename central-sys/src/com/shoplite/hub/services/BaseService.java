@@ -23,10 +23,5 @@ public class BaseService {
 		}
 		
 	}
-	
-	public String getError()
-	{
-		return "{\"status\": \"failure\", \"cause\": \"invalid session\"}";
-	}
 
 }

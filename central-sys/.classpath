@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry exported="true" kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/google-api-java-client-1.17.0-rc/google-api-java-client/libs/gson-2.1.jar"/>
 	<classpathentry kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/jersey/jaxrs-ri-2.3.1/jaxrs-ri/api/javax.ws.rs-api-2.0.jar"/>
 	<classpathentry kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/jersey/jaxrs-ri-2.3.1/jaxrs-ri/ext/asm-all-repackaged-2.2.0-b14.jar"/>
 	<classpathentry kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/jersey/jaxrs-ri-2.3.1/jaxrs-ri/ext/cglib-2.2.0-b14.jar"/>
@@ -33,5 +32,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/Users/i056064/Office/CachetWorkspace/ServerCode/google-api-java-client-1.17.0-rc/google-api-java-client/libs/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

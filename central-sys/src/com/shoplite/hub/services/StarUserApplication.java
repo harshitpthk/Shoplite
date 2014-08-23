@@ -9,6 +9,7 @@ import javax.ws.rs.core.Application;
 
 import com.shoplite.hub.services.shop.GetItem;
 import com.shoplite.hub.services.user.AddUserService;
+import com.shoplite.hub.services.user.GetShopListService;
 import com.shoplite.hub.services.user.GetShopService;
 import com.shoplite.hub.services.user.LoginService;
 import com.shoplite.hub.services.user.RegisterUserService;
@@ -26,6 +27,7 @@ public class StarUserApplication extends Application{
        classes.add(RegisterUserService.class);
        classes.add(AddUserService.class);
        classes.add(LoginService.class);
+       classes.add(GetShopListService.class);
        return classes;
 	}
     

@@ -1,32 +1,21 @@
 var server={requestURL:"", reqType:"",reqdata:"",callBackSuccess:""};
 var token;
+var cookie;
 var BASEURL= "https://starp1940130226trial.hanatrial.ondemand.com/central-sys/service/shopadmin/"
-var servercall_success =function(msg)
+var SHOPURL = ""
+
+var servercall_success =function(data,textStaus,jqXHR)
 {
 	try{
-		data=msg;
-    	
+	
     	if("failure"==data.status)
     	{
     		if("invalid session"==data.cause)
     		{
-    			//alert("session expired. Login again");
-    			
-				var cookieClearSuccess = function (){
-					window.location.href  = "Login.html";
-					return;
-				}
-	
-				var errorFunction = function errorDelete(){
-					window.location.href  = "Login.html";
-					return;
-				}
-				clearcookies(cookieClearSuccess,errorFunction);
-						
-				window.location.href  = "Login.html";
+    			alert("session expired. Login again");
     			
     		}
-    		server.callBackSuccess(data);
+    		alert(data.cause);
     	}else
     	{
     		server.callBackSuccess(data);
@@ -43,12 +32,17 @@ var servercall_error=function(jqXHR, textStatus, errorThrown)
 		alert(jqXHR.status + ' ' + textStatus + ' - ' + errorThrown);
 }
 
-function connectServer(reqType,reqURL,reqdata,successFunction)
+function connectServer(reqType,reqURL,reqdata,successFunction,isShop)
 {
 	try
 	{
 		var Type = reqType;
 		var ServiceUrl = BASEURL+reqURL;
+		
+		if(isShop)
+		{
+			ServiceUrl = SHOPURL+reqURL;
+		}
 		var varData = reqdata;
 		var ContentType = "application/json; charset=utf-8";
 		var DataType = "json"; 
@@ -64,13 +58,9 @@ function connectServer(reqType,reqURL,reqdata,successFunction)
 		$.ajax({
 					  beforeSend		:  function (xhr){
 					  							xhr.setRequestHeader('Access-Control-Allow-Star', 'shoplite');
-											},
-											
-					  cache				: false,
-					  complete			: function (xhr) {
-					  
-												
-											},
+					  							},
+					
+					cache				: false,
 					type               : Type, //GET or POST or PUT or DELETE verb
 					url                : ServiceUrl, // Location of the service
 					data               : varData, //Data sent to server

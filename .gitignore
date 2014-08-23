@@ -1,0 +1,14 @@
+
+*.java
+
+*.class
+
+ServiceTester/build/classes/com/shoplite/hub/test/AddUserTest.class
+
+ServiceTester/build/classes/com/shoplite/hub/test/GetShopTest.class
+
+ServiceTester/build/classes/com/shoplite/hub/test/LoginTest.class
+
+ServiceTester/build/classes/com/shoplite/hub/test/RegisterUserTest.class
+
+ServiceTester/build/classes/Main.class

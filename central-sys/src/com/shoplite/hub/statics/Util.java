@@ -25,10 +25,8 @@ private static String CharSetEncoding ="UTF-8";
 private static String SHA = "SHA-1";
 public static Key KEY_ALGO =null;
 public  static String CLIENT_ID=null; 
-public final static String session_user_header = "shoplite-user-token";
-public final static String session_shop_header = "shoplite-shop-token";
-public final static long session_user_timeout = 60*60*2;
-public final static long session_shop_timeout = 60*60*5;
+public final static long session_user_timeout = 60*60*2*1000;
+public final static long session_shop_timeout = 60*60*5*1000;
 
 public static String generateRandomString(int length) {
 		
@@ -108,42 +106,6 @@ public static int generateRandomNumber(int length) {
 		return str;
 	}
 	
-	public static Session vallidateUserSession(HttpServletRequest request, Connection conn) throws Exception
-	{
-		HttpSession session = request.getSession(false);
-		
-		
-		if(session==null)
-		{
-			throw new Exception("session not found");
-		}
-		
-		String sessionKey = request.getHeader(Util.session_user_header);
-		String cookieName = request.getServletContext().getInitParameter("SessionCookie");
-		
-		String  serverKey = (String)session.getAttribute(cookieName);
-		
-		
-		if(sessionKey!=null && sessionKey.equalsIgnoreCase(serverKey))
-		{
-			Session session_user = (Session)session.getAttribute(sessionKey);
-			
-			if(session_user!=null && session_user.isSessionVallid())
-			{
-				return session_user;
-				
-			}else if(session_user ==null)
-			{
-				throw new Exception("session object missing");
-			}else
-			{
-				throw new Exception("session time out");
-			}
-			
-			
-		}
-		throw new Exception("session validation failed");
-
-	}
+	
 	
 }

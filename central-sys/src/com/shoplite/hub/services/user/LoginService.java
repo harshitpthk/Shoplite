@@ -1,7 +1,9 @@
 package com.shoplite.hub.services.user;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +33,7 @@ public class LoginService extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String user ) 
+	public String login(@Context HttpServletRequest request, @Context HttpServletResponse response, String user ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -57,17 +59,18 @@ public class LoginService extends BaseService{
 			
 			
 			Session session = new Session(user_id,Util.session_user_timeout);
-			String key = Util.generateRandomString(16);
-			sessionCookie.setAttribute(cookieName, key);
-			sessionCookie.setAttribute(key, session);
-			response.setHeader(Util.session_user_header,key);
+			sessionCookie.setAttribute(cookieName, session);
 			
 			return gson.toJson("success");
 			
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return getError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
+			return null;
 			
 		}finally
 		{
@@ -78,6 +81,7 @@ public class LoginService extends BaseService{
 	private void validateClient(HttpServletRequest request) throws Exception{
 		String client = request.getHeader(client_id_header);
 		GregorianCalendar calendar = new GregorianCalendar();
+		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 		long time = calendar.getTimeInMillis();
 		time = time+60*1000;
 		int i;

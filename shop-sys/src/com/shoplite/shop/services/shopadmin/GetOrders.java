@@ -1,5 +1,6 @@
 package com.shoplite.shop.services.shopadmin;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
-import com.shoplite.shop.services.BaseService;
 import com.shoplite.shop.statics.SQLUtil;
 import com.shoplite.shop.statics.Util;
 
@@ -31,7 +31,7 @@ public class GetOrders extends BaseService{
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getOrder(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) 
+	public String getOrder(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
@@ -40,7 +40,8 @@ public class GetOrders extends BaseService{
 			
 			if(!checkUserSession(request))
 			{
-				return Util.getInvalidSessionError();
+				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+				return null;
 			}
 			
 			initDB();
@@ -56,7 +57,11 @@ public class GetOrders extends BaseService{
 		}catch(Exception e)
 		{
 			logger.error(e.getMessage());
-			return Util.getInternalError();
+			for (StackTraceElement ste : e.getStackTrace()) {
+				logger.error(ste.toString());
+			}
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
+			return null;
 			
 		}finally
 		{
