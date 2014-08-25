@@ -35,7 +35,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		Gson  gson = new Gson();
 		TestInterface test = new GetItemTest();
-<<<<<<< HEAD
+
 
 		System.out.println("Register user ");
 		test = new RegisterUserTest();
@@ -48,11 +48,11 @@ public class Main {
 		System.out.println("reg obj got back ="+obj);
 		
 		System.out.println("add user ");
-		Gson  gson = new Gson();
-		Integer regtoken =gson.fromJson(obj, Integer.class);
+		Gson  gson1 = new Gson();
+		Integer regtoken =gson1.fromJson(obj, Integer.class);
 		test = new AddUserTest(regtoken);
 		String client =excutePost(test);
-		String id = gson.fromJson(client, String.class);
+		String id = gson1.fromJson(client, String.class);
 		System.out.println("client id got ="+client);
 		try {
 			client_id = Util.decrypt(id);
@@ -62,7 +62,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-=======
+
 //		System.out.println("Register user ");
 //		test = new RegisterUserTest();
 //		 
@@ -87,7 +87,7 @@ public class Main {
 //			e.printStackTrace();
 //		}
 		client_id="UBYr789";
->>>>>>> origin/master
+
 		System.out.println("login user ");
 		test = new LoginTest(client_id);
 		System.out.println(excutePost(test));
@@ -98,7 +98,7 @@ public class Main {
 		System.out.println(shopStr);
 	
 		
-		Shop shop = gson.fromJson(shopStr, Shop.class);
+		Shop shop = gson1.fromJson(shopStr, Shop.class);
 		
 		urlAddress = "https://"+shop.getUrl()+"service/user/";
 		
