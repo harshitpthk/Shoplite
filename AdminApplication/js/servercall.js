@@ -1,32 +1,6 @@
-var server={requestURL:"", reqType:"",reqdata:"",callBackSuccess:""};
-var token;
-var cookie;
 var BASEURL= "https://starp1940130226trial.hanatrial.ondemand.com/central-sys/service/shopadmin/"
 var SHOPURL = ""
 
-var servercall_success =function(data,textStaus,jqXHR)
-{
-	try{
-	
-    	if("failure"==data.status)
-    	{
-    		if("invalid session"==data.cause)
-    		{
-    			alert("session expired. Login again");
-    			
-    		}
-    		alert(data.cause);
-    	}else
-    	{
-    		server.callBackSuccess(data);
-    	}
-    	
-    }catch(e){
-        
-        alert("Syntax Error in the response of "+server.requestURL+"  " +e.message ); 
-
-    }
-}
 var servercall_error=function(jqXHR, textStatus, errorThrown)
 {
 		alert(jqXHR.status + ' ' + textStatus + ' - ' + errorThrown);
@@ -48,10 +22,6 @@ function connectServer(reqType,reqURL,reqdata,successFunction,isShop)
 		var DataType = "json"; 
 		var ProcessData = false; 
 		
-		server.reqType = reqType;
-		server.reqdata = reqdata;
-		server.callBackSuccess = successFunction;
-		server.requestURL = reqURL;
 		var timeout_server = 60000;
 	
 		
@@ -72,7 +42,22 @@ function connectServer(reqType,reqURL,reqdata,successFunction,isShop)
 					xhrFields          : {
 											withCredentials: false
 										 },
-					success            : servercall_success,
+					success            : function(data,textStaus,jqXHR)
+											{
+													if("failure"==data.status)
+													{
+														if("invalid session"==data.cause)
+														{
+															alert("session expired. Login again");
+				
+														}
+														alert(data.cause);
+													}else
+													{
+														successFunction(data);
+													}
+	
+											},
 					error			   : servercall_error	 
 		});
 	}					

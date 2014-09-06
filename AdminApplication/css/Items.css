@@ -3,8 +3,9 @@
 {
 	position:relative;
 	width: 20%;
-	height: 100%;
+	height: 90%;
 	float:left;
+
 }
 
 .categoryItem
@@ -12,37 +13,42 @@
 	width: 100%;
 	height: 10%;
 	margin: auto;
-	border-bottom: 2px;
-	border-bottom-color: bisque;
-	border-bottom-width: thin;
-	background-color: aliceblue;
-	border-bottom-style: solid;
 }
 
 .categoryName
 {
 	position: relative;
 	top: 25%;
-	width: 100%;
+	width: 95%;
 	height: 70%;
 	margin-left: 5%;
 	text-align: left;
 	float:left;
 }
 
-.categoryPathBar
+.pathBar
 {
 	position: relative;
-	width: 80%;
+	width: 100%;
 	height: 10%;
 	float: left;
+}
+
+.pathBarCategoryItem
+{
+	margin-left:5px;
+	padding: 7px;
+	float: left;
+	border: 4px solid #bbb;
+	border-width: thin;
+	
 }
 
 .subCategoryBox
 {
 	position: relative;
 	width: 80%;
-	height: 100%;
+	height: 90%;
 	float: left;
 }
 
@@ -51,76 +57,80 @@
 	margin: 2%;
 	padding: 1%;
 	float: left;
-	border: 2px;
-	border: 4px;
-	border-color: bisque;
+	
+	border: 4px solid #bbb;
 	border-width: thin;
-	background-color: aliceblue;
-	border-style: solid;
 	border-radius: 15px;
 }
 
-.pathBarCategoryItem
-{
-	padding: 1%;
-	float: left;
-	border: 4px;
-	border-color: bisque;
-	border-width: thin;
-	background-color: aliceblue;
-	border-style: solid;
-}
+
 
 .productItem
 {
 	margin: 2%;
 	padding: 1%;
 	float: left;
-	border: 4px;
-	border-color: bisque;
-	border-width: thin;
-	background-color: aliceblue;
-	border-style: solid;
+	border: 1px solid #404040;
 	border-radius: 15px;
+	color:darkcyan;
 }
 
 .productIcon
 {
 	position: relative;
-	content: url('../img/product.jpg');
+	content: url('../img/product.gif');
 	margin: 10px;
 	text-align: center;
-	
 }
 
 .productName
 {
 	position: relative;
-	margin: 4px;
-	margin-bottom:10px;
+	margin: 6px;
 	text-align: center;
-	
+	color:rgb(160,12,160);
 }
 
 .productPrice
 {
 	position: relative;
-	margin: 2px;
+	margin: 4px;
 	text-align: center;
 }
 
 .productVariance
 {
 	position: relative;
-	margin: 2px;
+	margin: 6px;
 	text-align: center;
 }
 
 .productQuantity
 {
 	position: relative;
-	margin: 2px;
+	margin: 4px;
 	text-align: center;
+}
+
+.update
+{
+	position: relative;
+	margin: 8px;
+	text-align: center;
+}
+
+.updateName
+{
+	float: left;
+	margin: 5px;
+}
+
+.inputNumber
+{
+	float: left;
+	width: 40px;
+	margin: 2px;
+	height: 20px;
 }
 
 

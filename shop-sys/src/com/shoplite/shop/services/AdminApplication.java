@@ -6,12 +6,17 @@ import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
+import com.shoplite.shop.services.shopadmin.ChangeItem;
 import com.shoplite.shop.services.shopadmin.FetchToPackItems;
-import com.shoplite.shop.services.GetCategories;
-import com.shoplite.shop.services.GetItems;
+import com.shoplite.shop.services.shopadmin.GetCategories;
+import com.shoplite.shop.services.shopadmin.GetItems;
+import com.shoplite.shop.services.shopadmin.GetOrders;
+import com.shoplite.shop.services.shopadmin.GetOrderDetails;
+import com.shoplite.shop.services.shopadmin.SubmitPayment;
+import com.shoplite.shop.services.shopadmin.ChangeOrderState;
 
 
-@ApplicationPath("/service/admin")
+@ApplicationPath("/service/shopadmin")
 public class AdminApplication extends Application{
 
 	@Override
@@ -21,6 +26,11 @@ public class AdminApplication extends Application{
        classes.add(FetchToPackItems.class);
        classes.add(GetItems.class);
        classes.add(GetCategories.class);
+       classes.add(ChangeItem.class);
+       classes.add(GetOrders.class);
+       classes.add(GetOrderDetails.class);
+       classes.add(SubmitPayment.class);
+       classes.add(ChangeOrderState.class);
        return classes;
 	}
 }

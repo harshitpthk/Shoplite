@@ -1,90 +1,26 @@
-var pages=['paymentPage','packersPage','homeDeliveryPage','adminPage'];
-var admin_menu_items=['Items','Income','Accounts','Alerts','Settings'];
-var admin_current_screen=-1;
+var pages=['paymentPage','packersPage','homeDeliveryPage','productsPage','adminPage'];
 
-function fillItems(divID)
-{
+var dashboard_currentPage;
 
-	var tableID = divID +"itemsTable";
-	$("#"+divID).append('<table id='+tableID+'></table>');
-	
-	for(var i=0;i<10;i++)
-	{
-		$("#"+tableID).append('<tr>'+
-			'<td>MatchedOrder'+i+'</td>'+
-			'<td>item'+i+'</td>'+
-			'<td>description'+i+'</td>'+
-			'<td>quantity'+i+'</td>'+
-			'<td>price'+i+'</td>'+
-			'</tr>');
-	}
-}
+var max_Limit=20;
+var currentOrderSeq=0;
 
-function fillOrders(divID)
-{
-	var tableID = divID +"ordersTable";
-	
-	$("#"+divID).append('<table id='+tableID+'></table>');
-	for(var i=0;i<10;i++)
-	{
-		$("#"+tableID).append('<tr>'+
-			'<td>OrderId'+i+'</td>'+
-			'<td>MatchedOrder'+i+'</td>'+
-			'<td>UserName'+i+'</td>'+
-			'</tr>');
-	}
-					
-}
-
-function fillMenu(divID)
-{
-	var id = "#"+divID;
-	for(var i=0;i<admin_menu_items.length;i++)
-	{
-		$(id).append('<div id= "admin_menu_item'+i+'" class ="menu_item" onclick="showscreen(\''+i+'\');" >'+
-								'<div id="menu_item_title" class="menu_title">'+admin_menu_items[i]+'</div>'+
-							'<div class="DivHelper"></div>'+'</div>'
-							);
-	}
-}
-
-
-function showPage(key)
-{
-	$(".page").addClass('inactive');
-	for(var index=0;index<pages.length;index++)
-	{
-		var tag= "#"+key;
-		if(pages[index]==key)
-		{
-			$(tag).removeClass('inactive');	
-		}
-	}
-}
-
-function getQueryParam(query) {
-  var result = {};
-  query.split("&").forEach(function(part) {
-    var item = part.split("=");
-    result[item[0]] = item[1];
-  });
-  return result;
-}
-
-function loadScreen(key)
+function loadPage(key)
 {
 	switch (key)
 	{
-		case "Items":
-  		loadItems();
+		
+  		
+		case "paymentPage":
+  		openPayments();
   		break;
   		
-		// case "Income":
-//   		loadIncome(a);
-//   		break;
+  		case "packersPage":
+  		openPackers();
+  		break;
   		
-  		case "Accounts":
-  		loadAccounts();
+  		case "homeDeliveryPage":
+  		openHomeDelivery();
   		break;
   		
   		// case "Alerts":
@@ -98,25 +34,23 @@ function loadScreen(key)
 	}
 }
 
-function unLoadScreen(key)
+function unLoadPage(key)
 {
 	switch (key)
 	{
-		case "Items":
-  		clearItems();
+		
+  		
+		case "paymentPage":
+  		closePayments();
   		break;
   		
-		// case "Income":
-//   		clearIncome();
-//   		break;
-  		
-  		case "Accounts":
-  		clearAccounts();
+  		case "packersPage":
+  		closePackers();
   		break;
   		
-  		// case "Alerts":
-//   		clearAlerts();
-//   		break;
+  		case "homeDeliveryPage":
+  		closeHomeDelivery();
+  		break;
 //   		
 //   		case "Settings":
 //   		clearSettings();
@@ -125,48 +59,203 @@ function unLoadScreen(key)
 	}
 }
 
-
-function showscreen(index)
+function fillItems(divID,data)
 {
-	if(admin_current_screen!=-1)
+
+	var tableID = divID +"itemsTable";
+	$("#"+divID).append('<table id='+tableID+'></table>');
+	
+	var sum=0;
+	for(var i=0;i<data.length;i++)
 	{
-		unLoadScreen(admin_menu_items[admin_current_screen]);
+		var key = data[i].orderId.toString();
+		var matchOrder = 0;
+		
+		if(localStorage.getItem(key) == null)
+		{
+			currentOrderSeq=currentOrderSeq+1;
+			localStorage.setItem(key, currentOrderSeq.toString());
+			matchOrder=currentOrderSeq;
+		}else
+		{
+			matchOrder= parseInt(localStorage.getItem(key));
+		}
+		
+		var rowValue = data[i].price * data[i].quantity;
+		$("#"+tableID).append('<tr>'+
+			'<td>'+matchOrder+'</td>'+
+			'<td>description'+i+'</td>'+
+			'<td>'+data[i].quantity+'</td>'+
+			'<td>'+data[i].price+'</td>'+
+			'<td>'+rowValue.toFixed(2)+'</td>'+
+			
+			'</tr>');
+			
+		sum = sum+rowValue;
 	}
 	
-	for(var i=0;i<admin_menu_items.length;i++)
-	{
+	$("#"+tableID).append('<tr style="color:rgb(160, 12, 160)">'+
+			'<td></td>'+
+			'<td></td>'+
+			'<td></td>'+
+			'<td>Total</td>'+
+			'<td>'+sum.toFixed(2)+'</td>'+
+			'</tr>');
 		
-		if(i==index)
+			
+	return sum;
+	
+}
+
+function fillOrders(divID,data,action)
+{
+	var tableID = divID +"ordersTable";
+	
+	$("#"+divID).append('<table id='+tableID+'></table>');
+	
+	
+	for(var i=0;i<data.length;i++)
+	{
+		var key = data[i].orderId.toString();
+		var matchOrder = 0;
+		
+		if(localStorage.getItem(key) == null)
 		{
-			loadScreen(admin_menu_items[i]);
-			admin_current_screen=i;
+			currentOrderSeq=currentOrderSeq+1;
+			localStorage.setItem(key, currentOrderSeq.toString());
+			matchOrder=currentOrderSeq;
+		}else
+		{
+			matchOrder= parseInt(localStorage.getItem(key));
 		}
-	}	
+		
+		$("#"+tableID).append('<tr>'+
+			'<td class="orderId actionable" onclick="'+action+'(this,'+data[i].paymentId+');">'+data[i].orderId+'</td>'+
+			'<td>'+matchOrder+'</td>'+
+			'<td>'+data[i].userName+'</td>'+
+			'</tr>');
+	}
+
+					
+}
+
+function fillMenu(divID,array,actionFunction)
+{
+	var id = "#"+divID;
+	for(var i=0;i<array.length;i++)
+	{
+		$(id).append('<div class ="menu_item" onclick="'+actionFunction+'(\''+i+'\',this);" >'+
+								'<div id="menu_item_title" class="menu_title actionable">'+array[i]+'</div>'+
+							'<div class="DivHelper"></div>'+'</div>'
+							);
+	}
 }
 
 
+function showPage(key,element)
+{
+	$("#"+dashboard_currentPage).addClass('inactive');
+	$("#"+key).removeClass('inactive');	
+	
+	loadPage(key);
+	unLoadPage(dashboard_currentPage);
+	dashboard_currentPage =key;
+	
+	$('.mainmenuItem').removeClass('highlight');
+	
+	$(element).addClass('highlight');
+}
+
+function getQueryParam(query) {
+  var result = {};
+  query.split("&").forEach(function(part) {
+    var item = part.split("=");
+    result[item[0]] = item[1];
+  });
+  return result;
+}
+
+function buildPaymentInfo(div,orderId,amount,successCallBack)
+{
+	
+	var html = '<div  class="input_label">OrderID : '+orderId+'</div>'+
+				'<div  class="input_label">Amount : '+amount+' Rs.</div>'+
+				'<div  class="input_radio" >'+
+					'<input type="radio" value="SWIPE" name="mode">Card  '+
+					'<input type="radio" value="CASH" name="mode">Cash '+
+				'</div>'+
+				'<input class="input_field" type="text" name="referenceNumber" placeholder="Reference number">';
+				
+	var obj ={callback:successCallBack,orderId:orderId,amount:amount};			
+				
+	var inputDiv = $('<input class="button bottombarItem" style="display:block" type="submit" value="Paid"/>').click(obj,submitPayment);
+	
+	$("#"+div).html(html);
+	$("#"+div).append(inputDiv);
+}
+
+function submitPayment(event)
+{
+	var input =event.data;
+	
+	var mode = $("input[type='radio'][name='mode']:checked").val();
+	var refNumber =$("input[name=referenceNumber]").val();  
+
+	var refValue =parseInt(refNumber);
+	
+	if(mode===undefined || isNaN(refValue))
+	{
+		alert('please select proper mode and enter valid reference number');
+		return;
+	}
+	var obj ={orderId:input.orderId,amount:input.amount,referenceNumber:refValue,mode:mode};
+
+	var data =JSON.stringify(obj);
+
+	function success(msg)
+	{
+		input.callback(input.orderId,msg);
+	}
+	services_makePayment(data,success);
+}
+
 $(document).ready(
 	function (){
-		var url =document.URL;
-		var urlSplitArray= url.split("?");
+
+		var userObj = JSON.parse(sessionStorage.user);
+		var shopUrl = userObj.shop.url+'service/shopadmin/';
+		SHOPURL = "https://"+shopUrl;
 		
-		if(urlSplitArray.length>1)
+		if(userObj.role!=="ADMIN")
 		{
-			var queryString  = decodeURIComponent(urlSplitArray[1]);
-			var result = getQueryParam(queryString);
-			var user = result["user"];
-			var userObj = JSON.parse(user);
-		
-			var shopUrl = userObj.shop.url;
-			SHOPURL = "https://"+shopUrl;
-			if(userObj.role==="ADMIN")
-			{
-				//alert("hi");
-			}else 
-			{
+			$("#adminMenu").remove();
+			$("#adminPage").remove();
 			
-			}
+		} 
+		
+		if(userObj.role==="CASHIER")
+		{
+			$("#packersMenu").remove();
+			$("#packersPage").remove();
+			
+			$("#productsMenu").remove();
+			$("#productsPage").remove();
+			
+		}else if(userObj.role==="PACKER")
+		{
+			$(".mainmenu").remove();
+			
+			$("#paymentPage").remove();
+			$("#homeDeliveryPage").remove();
+			$("#productsPage").remove();
+			
+			$("#packersPage").removeClass('inactive');	
+			loadPage("packersPage");
 		}
+		
+		
+		
+		
 
 	}
 );

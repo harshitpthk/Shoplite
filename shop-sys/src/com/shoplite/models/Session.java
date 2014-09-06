@@ -1,7 +1,7 @@
 package com.shoplite.models;
 
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+
+import com.shoplite.shop.statics.Util;
 
 public class Session {
 	private long timeStamp;
@@ -13,9 +13,7 @@ public class Session {
 		super();
 		this.user_id = user_id;
 		this.timeOut = timeOut;
-		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-		this.timeStamp = calendar.getTimeInMillis();
+		this.timeStamp = Util.calendar.getTimeInMillis();
 	}
 	public int getUserId() {
 		return user_id;
@@ -32,9 +30,7 @@ public class Session {
 	
 	public boolean isSessionVallid()
 	{
-		GregorianCalendar calendar = new GregorianCalendar();
-		calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
-		if(this.timeStamp+this.timeOut > calendar.getTimeInMillis())
+		if(this.timeStamp+this.timeOut >  Util.calendar.getTimeInMillis())
 		{
 			return true;
 		}else

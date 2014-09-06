@@ -8,10 +8,11 @@ function fillAccountForm()
 	
 	function success(data)
 	{
-		buildUserListForm(data)
+		buildUserListForm(data);
 	}
 	
 	services_getShopUsers(success);
+	buildUserAddForm();
 }
 
 function clearAccounts()
@@ -79,8 +80,8 @@ function accounts_deleteUser(userid)
 function buildUserListForm(users)
 {
 	$('#listUserBox').append('<div class=userItem>'+
-									'<div class=userName>ADD USER</div>'+
-									'<div class=userRole></div>'+
+									'<div class=userField>Add User</div>'+
+									'<div class=userField></div>'+
 									'<img class=userAdd onclick="buildUserAddForm();"/>'+
 								'</div>');
 								
@@ -88,8 +89,10 @@ function buildUserListForm(users)
 	{
 		var user = users[i];
 		$('#listUserBox').append('<div class=userItem>'+
-									'<div class=userName>'+user.userID+'</div>'+
-									'<div class=userRole>'+user.role+'</div>'+
+									'<div class=userField>'+user.userID+'</div>'+
+									'<div class=userField>'+user.role+'</div>'+
+									// '<div class="userRole actionable">edit</div>'+
+// 									'<div class="userRole actionable">delete</div>'+
 									'<img id=userEdit class=editImg onclick="buildUserEditForm(\''+user.userID+'\',\''+user.role+'\');"/>'+
 									'<img id=userDelete class=deleteImg onclick="accounts_deleteUser(\''+user.userID+'\');"/>'+
 								'</div>');

@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.shoplite.models.PaymentDetail;
+import com.shoplite.shop.statics.Constants.ORDERState;
 import com.shoplite.shop.statics.SQLUtil;
 import com.shoplite.shop.statics.Util;
 
@@ -37,11 +38,11 @@ Logger logger = LoggerFactory.getLogger(SubmitPayment.class);
 		
 		try{
 			
-			if(!checkUserSession(request))
-			{
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
-				return null;
-			}
+//			if(!checkUserSession(request))
+//			{
+//				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+//				return null;
+//			}
 			
 			initDB();
 			conn = dataSource.getConnection();
@@ -51,6 +52,9 @@ Logger logger = LoggerFactory.getLogger(SubmitPayment.class);
 			int paymentId = SQLUtil.createPayment(conn,payment);
 			
 			addPaymentForOrder(payment.getOrderId(),paymentId,conn);
+			
+			if(ORDERState.FORPAYMENT==SQLUtil.getOrderState(payment.getOrderId(),conn))
+				SQLUtil.changeOrderState(payment.getOrderId(),ORDERState.FORDELIVERY,conn);
 			
 		}catch(Exception e)
 		{

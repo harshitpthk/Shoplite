@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.shoplite.models.Input;
 import com.shoplite.models.Item;
 import com.shoplite.models.ItemCategory;
 import com.shoplite.shop.statics.SQLUtil;
@@ -64,6 +65,7 @@ public class GetItemService extends BaseService{
 			}else if(inputObject.type.equalsIgnoreCase("itemid"))
 			{	
 				itemCategory= getItem(inputObject.id,conn);
+				
 			}
 			
 			return gson.toJson(itemCategory);
@@ -119,8 +121,3 @@ public class GetItemService extends BaseService{
 	
 }
 
-class Input
-{
-	String type;
-	int id;
-}

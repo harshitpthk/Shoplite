@@ -20,37 +20,38 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
+import com.shoplite.shop.statics.Constants;
+import com.shoplite.shop.statics.Constants.ORDERState;
 import com.shoplite.shop.statics.SQLUtil;
-import com.shoplite.shop.statics.Util;
 
-@Path("getorder")
+@Path("getorders")
 public class GetOrders extends BaseService{
 	
-	Logger logger = LoggerFactory.getLogger(SubmitPayment.class);
+	Logger logger = LoggerFactory.getLogger(GetOrders.class);
 	
 	@POST
 	@Consumes({ MediaType.APPLICATION_JSON})
 	@Produces({ MediaType.APPLICATION_JSON})
-	public String getOrder(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
+	public String getOrders(@Context HttpServletRequest request, @Context HttpServletResponse response, String input ) throws IOException 
 	{
 		Gson gson = new Gson();
 		Connection conn = null;
 		
 		try{
 			
-			if(!checkUserSession(request))
-			{
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
-				return null;
-			}
+//			if(!checkUserSession(request))
+//			{
+//				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+//				return null;
+//			}
 			
 			initDB();
 			conn = dataSource.getConnection();
 			
-			int state = gson.fromJson(input, Integer.class);
+			ORDERState state = gson.fromJson(input, Constants.ORDERState.class);
 			
 			ArrayList<Order> orders = new ArrayList<Order>();
-			getOrder(state,conn,orders);
+			getOrders(state.ordinal(),conn,orders);
 			
 			return gson.toJson(orders);
 		
@@ -69,9 +70,9 @@ public class GetOrders extends BaseService{
 		}
 	}
 
-	private void getOrder(int state, Connection conn, ArrayList<Order> orders) throws SQLException {
+	private void getOrders(int state, Connection conn, ArrayList<Order> orders) throws SQLException {
 		// TODO Auto-generated method stub
-		String getOrder = "Select ORDER_ID,USER_ID from ORDERS WHERE STATUS =?";
+		String getOrder = "Select ORDER_ID,USER_ID,USER_NAME,PAYMENT_ID from ORDERS WHERE STATUS =?";
 		
 		PreparedStatement pstmt = conn.prepareStatement(getOrder);
 		pstmt.setInt(1, state);
@@ -80,7 +81,7 @@ public class GetOrders extends BaseService{
 		
 		while(rs.next())
 		{
-			orders.add(new Order(rs.getInt(1),rs.getInt(2)));
+			orders.add(new Order(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4)));
 		}
 		
 	}
@@ -91,10 +92,16 @@ class Order
 {
 	int orderId;
 	int userId;
-	public Order(int orderId, int userId) {
+	String userName;
+	int paymentId;
+	public Order(int orderId, int userId, String username,int paymentId) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
+		this.userName=username;
+		
+		if(paymentId!=0)
+			this.paymentId=paymentId;
 	}
 	
 }

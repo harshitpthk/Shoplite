@@ -22,7 +22,6 @@
             width: 50%;
             -webkit-box-shadow: 0px 0px 2px 2px #444;
             box-shadow: 0px 0px 2px 2px #444;
-            background: rgba(241,234,208,0.7);
            
         }
         
@@ -43,102 +42,28 @@
             display: block;
             text-align: center;
             height: 25%;
-            color: ;
-            font-size: 50px;
-            font-size-adjust: inherit;
-            -webkit-text-fill-color: #102B42; /* Will override color (regardless of order) */
-            -webkit-text-stroke-width: 1px;
-            -webkit-text-stroke-color: white;
-            -webkit-text-size-adjust: auto;
-            
-            -webkit-transition: -webkit-transform 500ms ease-out;
-            -moz-transition: -moz-transform 500ms ease-out;
-            -o-transition: -o-transform 500ms ease-out;
-            transition: transform 500ms ease-out;
+            color: #404040;
             
         }
         
-        .button{
-            text-align: center;
-            position:relative;
-            margin: 0 auto;
-            margin-top: 5%;
-            width: auto;
-            height:auto;
-            min-height: 35px;
-            min-width: 100px;
-            max-height: 60px;
-            max-width: 200px;
-            display: inline-block;
-            -webkit-box-shadow: 0px 0px 1px 1px grey;
-            box-shadow: 0px 0px 1px 1px grey;
-            background-color: #00ADA9;
-            font-size: 22px;
-            color: white;
-            font-size-adjust: inherit;
-             -webkit-text-size-adjust: auto;
+        .logo
+        {
+        	font-size: 50px;
+            color: rgb(160, 12, 160);
         }
-        
-        .button:hover{
-            text-align: center;
-            position:relative;
-            margin: 0 auto;
-            margin-top: 5%;
-            width: auto;
-            height:auto;
-            min-height: 35px;
-            min-width: 100px;
-            max-height: 60px;
-            max-width: 200px;
-            display: inline-block;  
-            -webkit-box-shadow: 0px 0px 1px 1px grey;
-            box-shadow: 0px 0px 1px 1px grey;
-            background-color: #102B42;
-            font-size: 22px;
-            color: white;
-            font-size-adjust: inherit;
-             -webkit-text-size-adjust: auto;
-        }
-        .button:active{
-            text-align: center;
-            position:relative;
-            margin: 0 auto;
-            margin-top: 5%;
-            width: auto;
-            height:auto;
-            min-height: 35px;
-            min-width: 100px;
-            max-height: 60px;
-            max-width: 200px;
-            display: inline-block;
-            -webkit-box-shadow:inset 0px 0px 1px 1px grey;
-            box-shadow: inset 0px 0px 1px 1px grey;
-            background-color: #000729;
-            font-size: 20px;
-            color: white;
-            font-size-adjust: inherit;
-            -webkit-text-size-adjust: auto;
-        }
-        
-        
-        .input_field{
-            font-size-adjust: inherit;
-            display: block;
-            text-align: center;
-            margin: 0 auto;
-            margin-top: 5%;
-            position: relative;
-            width: 50%;
-            height:10%;
-            border: 1px solid grey;
-            background-color: #fff; 
-             -webkit-box-shadow: 0px 0px 1px 1px #5F7A87;
-            box-shadow: 0px 0px 1px 1px #5F7A87;
-             -webkit-text-size-adjust: auto;
-        
-        }
+        .company
+		{
+			bottom: 8%;
+			left: 57%;
+			position: absolute;
+			color: #404040;
+			font-size: 25px;
+		}
+		
         
 	 </style>
+	 
+	 <link rel="stylesheet" href="css/common.css" />
 	 
 	<script type="text/javascript" src="js/tp/jquery.js"></script>	
 	<script type="text/javascript" src= "js/servercall.js" > </script>
@@ -147,9 +72,8 @@
 	 
 	 	var success =function(msg)
 	 	{
-	 		//var data =JSON.parse(msg);
-	 		var user = "user="+JSON.stringify(msg);
-	 		window.location.href="dashboard.html?"+encodeURIComponent(user);
+	 		sessionStorage.user=JSON.stringify(msg);
+	 		window.location.href ="dashboard.html";
 	 	}
 	 	
         function login()
@@ -182,14 +106,20 @@
 		<div id=loginBox class=loginBox>
 		
 			<div class="heading_container">
-        		Welcome to Shoplite
+        		<div class="logo">
+					<span style="color:#F16745">S</span>
+					<span style="color:#FFC65D">h</span>
+					<span style="color:#7BC8A4">o</span>
+					<span style="color:#4CC3D9">p</span>
+					<span >lite</span>
+				</div>
+				<div class="company">a buitlo company</div>
         	</div>
 			
 			<input id= "userId" class = "input_field" type="text" placeholder="Username">
 			<input id= "userCode" class = "input_field" type="password" placeholder="Password">
-			<span class = "button" onclick="login();">
-				Submit
-			</span>
+			<input class = "button" onclick="login();" type="submit" value="Login" >
+			
 		</div>
 		
 		<div id=infoBox class=infoBox>

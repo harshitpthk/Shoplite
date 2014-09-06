@@ -47,3 +47,45 @@ function services_getItems(varData,successFunction)
 	var ServiceUrl ="getitems";	
 	connectServer(Type,ServiceUrl,varData,successFunction,true);
 }
+
+function services_changeItem(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="changeitem";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
+}
+
+function services_getOrders(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="getorders";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
+}
+
+function services_getOrderDetails(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="getorderdetails";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
+}
+
+function services_getUnPackedItems(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="fetchitems";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
+}
+
+function services_makePayment(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="submitpayment";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
+}
+
+function services_changeOrderState(varData,successFunction)
+{
+	var Type = "POST";
+	var ServiceUrl ="changeorderstate";	
+	connectServer(Type,ServiceUrl,varData,successFunction,true);
+}

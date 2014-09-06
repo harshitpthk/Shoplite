@@ -8,6 +8,7 @@ public class ItemCategory {
 	private String name;
 	private int categoryId;
 	private ArrayList<Item> itemList;
+	private int brandId;
 	
 	public int getId() {
 		return id;
@@ -33,11 +34,25 @@ public class ItemCategory {
 		this.id = id;
 		this.name = name;
 	}
+	
+	public ItemCategory(int id, String name, int brandId) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.brandId=brandId;
+	}
+	
 	public ArrayList<Item> getItemList() {
 		return itemList;
 	}
 	public void setItemList(ArrayList<Item> itemList) {
 		this.itemList = itemList;
+	}
+	public int getBrandId() {
+		return brandId;
+	}
+	public void setBrandId(int brandId) {
+		this.brandId = brandId;
 	}
 	
 	

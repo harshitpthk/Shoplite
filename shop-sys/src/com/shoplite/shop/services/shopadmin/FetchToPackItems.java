@@ -40,12 +40,12 @@ Logger logger = LoggerFactory.getLogger(PackItemsService.class);
 		
 		try{
 			
-			if(!checkUserSession(request))
-			{
-				
-				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
-				return null;
-			}
+//			if(!checkUserSession(request))
+//			{
+//				
+//				response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "invalid session");
+//				return null;
+//			}
 			
 			initDB();
 			conn = dataSource.getConnection();
@@ -74,7 +74,7 @@ Logger logger = LoggerFactory.getLogger(PackItemsService.class);
 
 	private void fetchNextSet(Connection conn, int noOfItems, ArrayList<OrderItemDetail> list) throws SQLException {
 		
-		String getItems = "SELECT TOP ? * FROM ITEMSTOPACK";
+		String getItems = "SELECT TOP ? ORDER_ID,ITEMSTOPACK.ITEM_ID,QUANTITY,ITEM_PRICE FROM ITEMSTOPACK join ITEM on ITEMSTOPACK.ITEM_ID= ITEM.ITEM_ID";
 		PreparedStatement pstmt = conn.prepareStatement(getItems);
 		pstmt.setInt(1, noOfItems);
 		
@@ -87,11 +87,15 @@ Logger logger = LoggerFactory.getLogger(PackItemsService.class);
 		SQLUtil.close(null, pstmt, rs);
 		
 		
-		String deleteItems = "DELETE FROM ITEMSTOPACK Where ORDER_ID,ITEM_ID IN SELECT TOP ? * FROM ITEMSTOPACK";
+		String deleteItems = "DELETE FROM ITEMSTOPACK Where ORDER_ID =? and ITEM_ID=?";
 		pstmt = conn.prepareStatement(deleteItems);
-		pstmt.setInt(1, noOfItems);
 		
-		pstmt.executeUpdate();
+		for(int i=0;i<list.size();i++)
+		{
+			pstmt.setInt(1, list.get(i).getOrderId());
+			pstmt.setInt(2, list.get(i).getItemId());
+			pstmt.executeUpdate();
+		}
 		
 		SQLUtil.close(null, pstmt, null);
 	}

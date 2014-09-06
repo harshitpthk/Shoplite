@@ -4,6 +4,7 @@ import java.security.Key;
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.util.Random;
 
 import javax.crypto.Cipher;
@@ -27,6 +28,7 @@ public static Key KEY_ALGO =null;
 public  static String CLIENT_ID=null; 
 public final static long session_user_timeout = 60*60*2*1000;
 public final static long session_shop_timeout = 60*60*5*1000;
+public final static  GregorianCalendar calendar = new GregorianCalendar();
 
 public static String generateRandomString(int length) {
 		

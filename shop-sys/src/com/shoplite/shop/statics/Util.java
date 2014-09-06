@@ -3,11 +3,11 @@ package com.shoplite.shop.statics;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.util.Random;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
-
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -24,6 +24,7 @@ public  static String CLIENT_ID=null;
 public final static int session_user_timeout = 60*60*2*1000;
 public final static int session_shop_timeout = 60*60*2*1000;
 public static String starURL=null; 
+public final static  GregorianCalendar calendar = new GregorianCalendar();
 
 public static String generateRandomString(int length) {
 		

@@ -1,6 +1,7 @@
 package com.shoplite.hub.filters;
 
 import java.io.IOException;
+import java.util.TimeZone;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -119,6 +120,8 @@ public class RequestFilter implements Filter{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		Util.calendar.setTimeZone(TimeZone.getTimeZone("GMT"));
 				
 	}
 

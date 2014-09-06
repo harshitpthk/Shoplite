@@ -142,8 +142,8 @@ public class PackItemsService extends BaseService {
 		
 		int orderID =  this.session.getUserOrderId();
 		
-		String insert = "INSERT INTO ORDERDETAILS(ORDER_ID,ITEM_ID,PRICE,QUANTITY) VALUES(?,?,?,?)";
-		String insertItemsToPack = "INSERT INTO ITEMSTOPACK(ORDER_ID,ITEM_ID,PRICE,QUANTITY) VALUES(?,?,?,?)";
+		String insert = "INSERT INTO ORDERDETAILS(ORDER_ID,ITEM_ID,QUANTITY) VALUES(?,?,?)";
+		String insertItemsToPack = "INSERT INTO ITEMSTOPACK(ORDER_ID,ITEM_ID,QUANTITY) VALUES(?,?,?)";
 		
 		
 		PreparedStatement pstmt = conn.prepareStatement(insert);
@@ -156,14 +156,12 @@ public class PackItemsService extends BaseService {
 		for(int i=0;i<packList.items.size();i++)
 		{
 			pstmt.setInt(2, packList.items.get(i).getItemId());
-			pstmt.setDouble(3, packList.items.get(i).getPrice());
-			pstmt.setInt(4, packList.items.get(i).getQuantity());
+			pstmt.setInt(3, packList.items.get(i).getQuantity());
 			
 			pstmt.executeUpdate();
 			
 			pstmtItemsToPack.setInt(2, packList.items.get(i).getItemId());
-			pstmtItemsToPack.setDouble(3, packList.items.get(i).getPrice());
-			pstmtItemsToPack.setInt(4, packList.items.get(i).getQuantity());
+			pstmtItemsToPack.setInt(3, packList.items.get(i).getQuantity());
 			
 			pstmtItemsToPack.executeUpdate();
 		}
