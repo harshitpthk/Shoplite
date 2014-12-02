@@ -1,0 +1,55 @@
+.userBox{
+	width: 50%;
+	top:10%;
+	height:80%;
+	text-align: center;
+	position: relative;
+	float:left;
+}
+
+#addUserBox
+{
+	-webkit-box-shadow: -4px 1px 3px -3px #bbb;
+}
+.userItem
+{
+	width: 80%;
+	height: 12%;	
+}
+
+.userField
+{
+	position: relative;
+	top: 25%;
+	width: 25%;
+	height: 70%;
+	margin-left: 5%;
+	text-align: left;
+	float: left;
+}
+
+.userAdd
+{
+	content: url('../img/addUser.png');
+	position: relative;
+	top: 5%;
+	left: 5%;
+	float: left;
+	margin-left:5%;
+}
+
+#userEdit
+{
+	left: 5%;
+	float: left;
+	margin-left:5%;
+	top: 18%;
+}
+
+#userDelete
+{
+	left: 5%;
+	float: left;
+	margin-left:5%;
+	top: 18%;
+}

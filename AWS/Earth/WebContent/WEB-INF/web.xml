@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>Earth</display-name>
+  <welcome-file-list>
+    <welcome-file>/builto/login.html</welcome-file>
+  </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>Hello World</display-name>
+    <servlet-name>HelloWorldServlet</servlet-name>
+    <servlet-class>com.builto.servlets.HelloWorldServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>HelloWorldServlet</servlet-name>
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+  
+ <servlet>
+    <servlet-name>com.builto.earth.services.EarthApplication</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.builto.earth.services.EarthApplication</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com.builto.earth.services.EarthApplication</servlet-name>
+    <url-pattern>/service/*</url-pattern>
+  </servlet-mapping>
+  
+  <servlet>
+    <servlet-name>com.builto.planet.services.PlanetApplication</servlet-name>
+    <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+    <init-param>
+      <param-name>javax.ws.rs.Application</param-name>
+      <param-value>com.builto.planet.services.PlanetApplication</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>com.builto.planet.services.PlanetApplication</servlet-name>
+    <url-pattern>/planet/*</url-pattern>
+  </servlet-mapping>
+  
+<context-param>
+	    <param-name>RegCookie</param-name>
+	    <param-value>RegistrationCookie</param-value>
+</context-param>
+<context-param>
+	    <param-name>SessionCookie</param-name>
+	    <param-value>SessionCookie</param-value>
+</context-param>
+	
+<filter>
+  <filter-name>RequestFilter</filter-name>
+  <filter-class>com.builto.filters.RequestFilter</filter-class>
+  <init-param>
+    <param-name>cors.allowed.origins</param-name>
+    <param-value>*</param-value>
+  </init-param>
+  <init-param>
+    <param-name>cors.allowed.methods</param-name>
+    <param-value>GET,POST</param-value>
+  </init-param>
+  <init-param>
+    <param-name>cors.exposed.headers</param-name>
+    <param-value>Access-Control-Allow-Star</param-value>
+  </init-param>
+  <init-param>
+    <param-name>star-key</param-name>
+    <param-value>thrhIRI8N0A6H*PA</param-value>
+  </init-param>
+  <init-param>
+    <param-name>client-key</param-name>
+    <param-value>UBYr789</param-value>
+  </init-param>
+  <init-param>
+    <param-name>cors.support.credentials</param-name>
+    <param-value>true</param-value>
+  </init-param>
+</filter>
+
+<filter-mapping>
+  <filter-name>RequestFilter</filter-name>
+  <url-pattern>/service/*</url-pattern>
+  <url-pattern>/planet/*</url-pattern>
+</filter-mapping>
+
+</web-app>

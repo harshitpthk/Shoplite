@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		
+		<script type="text/javascript" src="js/tp/jquery.js"></script>
+		<script type="text/javascript" src= "js/servercall.js" > </script>
+		<script type="text/javascript" src= "js/services.js " > </script>
+		<script type="text/javascript" src= "js/servicesLogin.js " > </script>
+		
+		<script type="text/javascript" src="js/paymentPage.js"></script>
+		<script type="text/javascript" src="js/packersPage.js"></script>
+		<script type="text/javascript" src="js/homeDeliveryPage.js"></script>
+		<script type="text/javascript" src="js/items.js"></script> 
+		<script type="text/javascript" src="js/productsPage.js"></script> 
+		<script type="text/javascript" src="js/accounts.js"></script> 
+		<script type="text/javascript" src="js/adminPage.js"></script> 
+		<script type="text/javascript" src="js/dashboard.js"></script> 
+		
+		<link rel="stylesheet" href="css/common.css" />
+		<link rel="stylesheet" href="css/dashboard.css" />
+		<link rel="stylesheet" href="css/productsPage.css" />
+		<link rel="stylesheet" href="css/items.css" />
+		<link rel="stylesheet" href="css/adminPage.css" />
+		<link rel="stylesheet" href="css/accounts.css" />
+		
+	</head>
+	
+	<body>
+	
+		<div class="toppane">
+			<div class="logo">
+				<span style="color:#F16745">S</span>
+				<span style="color:#FFC65D">h</span>
+				<span style="color:#7BC8A4">o</span>
+				<span style="color:#4CC3D9">p</span>
+				<span >lite</span>
+			</div>
+			<div class="company">a buitlo company</div>
+		</div>
+		<div class="mainmenu">
+			<div id="packersMenu" class="mainmenuItem actionable" onclick="showPage('packersPage',this);">Packers</div>
+			<div id="paymentMenu" class="mainmenuItem actionable" onclick="showPage('paymentPage',this);">Payments</div>
+			<div id="homeDeliveryMenu" class="mainmenuItem actionable" onclick="showPage('homeDeliveryPage',this);">Home Delivery</div>
+			<div id="productsMenu" class="mainmenuItem actionable" onclick="showPage('productsPage',this);">Products</div>
+			<div id="adminMenu" class="mainmenuItem actionable" onclick="showPage('adminPage',this);">Admin</div>
+		</div>
+		<div id="paymentPage" class="page inactive">
+			<div class="leftpane">
+			
+				<div class="orders">
+					<div class="header"> <div class="title"> Orders Confirmed</div></div>
+					<div id="paymentPage_ordersConfirmedContainer" class="container" ></div>
+				</div>
+				
+				<div class="orders">
+					<div class="header"> <div class="title">Payment information</div></div>
+					<div id="paymentPage_paymentContainer" class="container" >
+					</div>
+				</div>
+			</div>
+			<div class="middlepane">
+				<div class="screen">
+					<div class="header" ><div id="paymentPage_title" class="title"> Details</div></div>
+					<div id="paymentPage_itemsContainer" class="container" ></div>
+				</div>
+			
+				<div class="bottombar">
+					
+					<input id="paymentPage_print" class="button bottombarItem" type="submit" value="Print" />
+					
+				</div>
+			</div>		
+		</div>
+		
+		<div id="packersPage" class="page inactive">
+			<div class="leftpane">
+			
+				<div id="unpackedItems" class="header actionable" onclick="packersPage_showUnpacked();"> 
+					Unpacked Items
+				</div>
+			
+				<div class="orders">
+					<div class="header" > <div class="title">Orders For Delivery</div></div>
+					<div id="packersPage_ordersDeliveryContainer" class="container" ></div>
+				</div>
+		
+				<div class="orders">
+					<div class="header" > <div class="title">Orders For Home Delivery</div></div>
+					<div id="packersPage_ordersHomeDeliveryContainer" class="container" ></div>
+				</div>
+				
+				<div class="orders">
+					<div class="header" ><div class="title"> Orders Confirmed</div></div>
+					<div id="packersPage_ordersConfirmedContainer" class="container" ></div>
+				</div>
+				
+			</div>
+			<div class="middlepane">
+				<div class="screen">
+					<div  class="header" ><div id="packersPage_title" class="title"> Details</div></div>
+					<div id="packersPage_itemsContainer" class="container" ></div>
+				</div>
+			
+				<div class="bottombar">
+					<input id="packersPage_next" class="button bottombarItem" type="submit" value="Next" onclick="packersPage_getNextSet();"/>
+					<input id="packersPage_delivered" class="button bottombarItem" type="submit" value="Delivered" onclick="packersPage_registerDelivery();">
+					<input id="packersPage_print" class="button bottombarItem" type="submit" value="Print" />
+					
+				</div>
+			</div>
+		</div>
+		
+		<div id="homeDeliveryPage" class="page inactive">
+			
+			<div class="leftpane">
+			
+				<div class="orders">
+					<div class="header" ><div class="title"> Orders For Home Delivery</div></div>
+					<div id="homeDeliveryPage_ordersContainer" class="container" ></div>
+				</div>
+				
+				<div class="orders">
+					<div class="header"> <div class="title">Payment information</div></div>
+					<div id="homeDeliveryPage_paymentContainer" class="container" >
+					</div>
+				</div>
+				
+			</div>
+			
+			<div class="middlepane">
+				<div class="screen">
+					<div class="header" > <div id="homeDeliveryPage_title" class="title">Details</div></div>
+					<div id="homeDeliveryPage_itemsContainer" class="container" ></div>
+				</div>
+			
+				<div class="bottombar">
+					<input id="homeDeliveryPage_delivered" class="button bottombarItem" type="submit" value="Delivered" onclick="homeDeliveryPage_registerDelivery();">
+					<input id="homeDeliveryPage_print" class="button bottombarItem" type="submit" value="Print" />
+					
+				</div>
+			</div>
+	
+			
+		</div>
+		
+		<div id="productsPage" class="page inactive">
+			
+			<div id="productsPage_leftpane" class="leftpane">
+			
+				<div class="menu">
+					<div class="header"> <div class="title"> Menu</div></div>
+					<div id="productsMenuItems_Container" class="container" ></div>
+					<script>
+						fillMenu("productsMenuItems_Container",product_menu_items,"productPage_showscreen");
+					</script>
+				</div>
+
+			</div>
+			
+			<div id="productsPage_middlepane" class="middlepane">
+			
+				<div class="screen">
+					<div class="header"><div class="title"> Accounts</div></div>
+					<div id="productsPage_container" class="container"></div>
+				</div>
+				<div id="productsPage_bottombar" class="bottombar">
+				</div>
+			</div>
+	
+			
+		</div>
+		
+		<div id="adminPage" class="page inactive">
+			<div id="adminPage_leftpane" class="leftpane">
+			
+				<div class="menu">
+					<div class="header" ><div class="title">Menu</div></div>
+					<div id="adminMenuItems_Container" class="container" ></div>
+					<script>
+						fillMenu("adminMenuItems_Container",admin_menu_items,"adminPage_showscreen");
+					</script>
+				</div>
+
+			</div>
+			
+			<div id="adminPage_middlepane" class="middlepane">
+			
+				<div class="screen">
+					<div class="header"> <div class="title">Accounts</div></div>
+					<div id="adminPage_container" class="container"></div>
+				</div>
+				<div id="adminPage_bottombar" class="bottombar">
+				</div>
+			</div>
+	
+			
+		</div>
+		
+	</body>
+	
+</html>

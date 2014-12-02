@@ -1,0 +1,7 @@
+builtodb
+builtodbuser
+shoplite
+
+
+stardb
+port:3306
