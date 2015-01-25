@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+var shopurl;
+function getQueryParam(query) {
+  var result = {};
+  query.split("&").forEach(function(part) {
+    var item = part.split("=");
+    result[item[0]] = item[1];
+  });
+  return result;
+}
+
+function loadImage()
+{
+	var url = window.location.href;
+	var queryString = url.substring( url.indexOf('?') + 1 );
+	var result = getQueryParam(queryString);
+	
+	var url = decodeURIComponent(result["redirect"]);
+	var id = result["id"];
+	
+	var img = new Image();
+	shopurl = "https://"+url;
+	img.src ="https://"+url+"service/shopadmin/login?id="+id;
+	
+}
+
+function onLoad()
+{
+	window.location.href =shopurl+"app/dashboard.html";
+}
+
+</script>
+</head>
+<body onLoad="onLoad();">
+please wait ...
+
+<img id="welcome"></img>
+<script> loadImage();</script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+html
+{
+	font-size:12pt;
+	white-space: nowrap;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	color: rgb(160, 12, 160);
+	font-family:"Gill Sans","Gill Sans MT", sans-serif;
+	
+}
+
+body
+{
+	/* background : #333; */
+	margin: 0;
+	margin-left: 2%;
+	margin-right: 2%;
+	padding: 0;
+	width: 96%;
+	height: 100%;
+	
+}
+
+
+.toppane
+{
+	width:96%;
+	height:10%;
+	position:fixed;
+	border-bottom: 1px solid #bbb;
+	-webkit-box-shadow: 0px 1px 5px 0px #bbb;
+	border-radius: 5px;
+}
+
+.logo
+{
+	position:absolute;
+	float:right;
+	top:25%;
+	left:80%;
+	font-size:26px;
+}
+
+.company
+{
+	bottom:8%;
+	left: 87%;
+	position: absolute;
+	color: #404040;
+}
+
+.mainmenu
+{
+	width:96%;
+	height:5%;
+	
+	position:fixed;
+	
+}
+
+.mainmenuItem
+{
+	float: left;
+	margin: 6px;
+}
+
+
+.page
+{
+	position:fixed;
+	width:96%;
+	height:82%;
+	top:10%;
+	opacity:1;
+	
+}
+
+.inactive
+{
+	display:none;
+}
+
+
+
+.leftpane
+{
+	position:relative;
+	width:32%;
+	height:100%;
+	float:left;
+
+}
+
+.middlepane
+{
+	position:relative;
+	width:68%;
+	height:100%;
+	float:left;
+	/* background-color:green; */
+	
+	-webkit-box-shadow: -4px 1px 3px -3px #bbb;
+}
+
+.screen
+{
+	position:relative;
+	width:100%;
+	height:80%;
+	
+	/* color:yellow; */
+}
+
+.bottombar
+{
+	position:relative;
+	width:100%;
+	height:10%;
+	
+	/* background-color:white; */
+}
+
+.bottombarItem
+{
+	float:right;
+	margin-right:5%;
+	display:none;
+}
+.orders
+{
+	position:relative;
+	width:100%;
+	height:50%;
+	
+}
+.header
+{
+	position:relative;
+	width:100%;
+	height:25px;
+	margin-top:8px;
+	margin-bottom:2px;
+	text-align:center;	
+	
+}
+
+.title
+{
+	margin-left:16%;
+	margin-right:16%;
+	
+}
+
+.container
+{
+	position:relative;
+	height:80%;
+	overflow: scroll;
+	color:cornflowerblue;
+	
+}
+
+table
+{
+	width:100%;
+	border-spacing: 10px;
+}
+td
+{
+	text-align:center;
+}
+
+
+
+
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	 <style>
+	 	 body,html{
+            margin: 0;
+            padding:0;
+            height: 100%;
+            width: 100%;
+        }
+        body{
+            
+            background-size: cover;
+            /* background-image:url("./img/map.jpg"); */
+        }
+            
+        #centerPart{
+            position:relative;
+            top: 18%;
+            margin : 0 auto;
+            height: 60%;
+            width: 50%;
+            -webkit-box-shadow: 0px 0px 2px 2px #444;
+            box-shadow: 0px 0px 2px 2px #444;
+           
+        }
+        
+        
+        .loginBox{
+            margin: 0 auto;
+            width: 80%;
+            top:10%;
+            height:90%;
+            text-align: center;
+            position: relative;
+/*            border: 1px solid black;*/
+        }
+        
+        .heading_container{
+            margin: 0 auto;
+            position:relative;
+            display: block;
+            text-align: center;
+            height: 25%;
+            color: #404040;
+            
+        }
+        
+        .logo
+        {
+        	font-size: 50px;
+            color: rgb(160, 12, 160);
+        }
+        .company
+		{
+			bottom: 8%;
+			left: 57%;
+			position: absolute;
+			color: #404040;
+			font-size: 25px;
+		}
+		
+        
+	 </style>
+	 
+	 <link rel="stylesheet" href="css/common.css" />
+	 
+	<script type="text/javascript" src="js/tp/jquery.js"></script>	
+	<script type="text/javascript" src= "js/servercall.js" > </script>
+	<script type="text/javascript" src= "js/servicesLogin.js " > </script>
+	 <script>
+	 
+	 	
+	 	
+        function login()
+        {
+        	var id = $("#userId").val();
+        	var code = $("#userCode").val();
+        	
+        	var res = id.split("\\");
+        	
+        	if(res.length==2)
+        	{
+        		var obj = {shopId:res[0],userId:res[1],code:code};
+        		var data = JSON.stringify(obj);
+        		
+        		function success(msg)
+				{
+					sessionStorage.user=JSON.stringify(msg);
+					var shopUrl = encodeURIComponent(msg.shop.url);
+					var id = encodeURIComponent(msg.id);
+					window.location.href ="redirect.html?redirect="+shopUrl+"&id="+id;
+			
+				}
+	 	
+        		services_login(data,success);
+        	}else
+        	{
+        	
+        		alert("user name should be in format of (domain)\\(userid)")
+        	}
+        	
+        }
+       </script> 
+       
+</head>
+
+<body>
+
+	<div id="centerPart">
+		<div id=loginBox class=loginBox>
+		
+			<div class="heading_container">
+        		<div class="logo">
+					<span style="color:#F16745">S</span>
+					<span style="color:#FFC65D">h</span>
+					<span style="color:#7BC8A4">o</span>
+					<span style="color:#4CC3D9">p</span>
+					<span >lite</span>
+				</div>
+				<div class="company">a buitlo company</div>
+        	</div>
+			<input id= "userId" class = "input_field" type="text" placeholder="Username">
+			<input id= "userCode" class = "input_field" type="password" placeholder="Password">
+			<input class = "button" onclick="login();" type="submit" value="Login" >
+			
+		</div>
+	
+	</div>
+
+</body>
+</html>
